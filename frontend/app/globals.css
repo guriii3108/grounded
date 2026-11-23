@@ -1,105 +1,178 @@
 @import "tailwindcss";
 
+/* ─── Warm Paper Token System ─────────────────────────────────────────────── */
 @layer base {
   :root {
-    --bg: #ffffff;
-    --bg-subtle: #f8f8fb;
-    --bg-elevated: #ffffff;
-    --border: #e6e6ee;
-    --border-strong: #d2d2df;
-    --fg: #13131a;
-    --fg-muted: #5e5e6e;
-    --fg-subtle: #89899c;
-    --accent: #6366f1;
-    --accent-hover: #4f46e5;
-    --accent-subtle: rgba(99, 102, 241, 0.08);
-    --accent-fg: #ffffff;
-    --positive: #10b981;
-    --positive-subtle: rgba(16, 185, 129, 0.1);
-    --negative: #ef4444;
-    --negative-subtle: rgba(239, 68, 68, 0.1);
-    --warning: #f59e0b;
-    --warning-subtle: rgba(245, 158, 11, 0.1);
-    --ring: rgba(99, 102, 241, 0.35);
-    --radius-sm: 4px;
-    --radius-md: 6px;
-    --radius-lg: 8px;
-    --radius-xl: 12px;
+    /* Background layers */
+    --bg:          #F7F4EE;   /* warm paper */
+    --surface:     #FFFFFF;
+    --surface-2:   #F1EDE4;   /* tinted panels, sidebar */
+    --bg-subtle:   #F1EDE4;   /* alias for compat */
+    --bg-elevated: #FFFFFF;   /* alias for compat */
+
+    /* Borders */
+    --line:          #E6E0D3;  /* hairline */
+    --line-strong:   #D8D1C4;
+    --border:        #E6E0D3;  /* alias for compat */
+    --border-strong: #D8D1C4;
+
+    /* Ink / type */
+    --ink:        #1E2B3A;    /* primary text */
+    --muted:      #6F6A60;    /* secondary text */
+    --subtle:     #9A948A;    /* tertiary / placeholders */
+    --fg:         #1E2B3A;    /* alias for compat */
+    --fg-muted:   #6F6A60;
+    --fg-subtle:  #9A948A;
+
+    /* Accent — apricot, used sparingly */
+    --accent:        #E9A66B;
+    --accent-hover:  #DC9055;
+    --accent-subtle: rgba(233,166,107,0.12);
+    --accent-fg:     #FFFFFF;
+    --ring:          rgba(233,166,107,0.5);
+
+    /* Semantic */
+    --positive:        #4F8A5B;  /* sage */
+    --positive-subtle: rgba(79,138,91,0.1);
+    --negative:        #C4553D;  /* terracotta */
+    --negative-subtle: rgba(196,85,61,0.1);
+    --warning:         #D69A2D;  /* amber */
+    --warning-subtle:  rgba(214,154,45,0.1);
+
+    /* Shape */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
   }
 
+  /* ── Dark: warm charcoal, NOT blue-black ─────────────────────── */
   .dark {
-    --bg: #0c0d12;
-    --bg-subtle: #12131a;
-    --bg-elevated: #181922;
-    --border: #232533;
-    --border-strong: #323547;
-    --fg: #f4f4f7;
-    --fg-muted: #9ba0b4;
-    --fg-subtle: #6c7185;
-    --accent: #7c7eff;
-    --accent-hover: #9294ff;
-    --accent-subtle: rgba(124, 126, 255, 0.12);
-    --accent-fg: #ffffff;
-    --positive: #10b981;
-    --positive-subtle: rgba(16, 185, 129, 0.15);
-    --negative: #f87171;
-    --negative-subtle: rgba(248, 113, 113, 0.15);
-    --warning: #fbbf24;
-    --warning-subtle: rgba(251, 191, 36, 0.15);
-    --ring: rgba(124, 126, 255, 0.45);
+    --bg:          #171512;
+    --surface:     #1F1C18;
+    --surface-2:   #252018;
+    --bg-subtle:   #252018;
+    --bg-elevated: #1F1C18;
+
+    --line:          #2E2A23;
+    --line-strong:   #3A342C;
+    --border:        #2E2A23;
+    --border-strong: #3A342C;
+
+    --ink:       #EDE8DF;
+    --muted:     #9A9186;
+    --subtle:    #6B6459;
+    --fg:        #EDE8DF;
+    --fg-muted:  #9A9186;
+    --fg-subtle: #6B6459;
+
+    /* Accent stays apricot — slightly brighter in dark */
+    --accent:        #EDAC72;
+    --accent-hover:  #F2B87E;
+    --accent-subtle: rgba(237,172,114,0.14);
+    --accent-fg:     #18140E;
+    --ring:          rgba(237,172,114,0.5);
+
+    --positive:        #5FA068;
+    --positive-subtle: rgba(95,160,104,0.14);
+    --negative:        #D4624A;
+    --negative-subtle: rgba(212,98,74,0.14);
+    --warning:         #E0A938;
+    --warning-subtle:  rgba(224,169,56,0.14);
   }
 
+  /* ── Reset defaults ──────────────────────────────────────────── */
   * {
-    border-color: var(--border);
+    border-color: var(--line);
   }
 
   body {
     background-color: var(--bg);
-    color: var(--fg);
+    color: var(--ink);
     font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Very subtle warm paper grain */
+    background-image:
+      radial-gradient(ellipse 60% 40% at 60% 0%, rgba(233,166,107,0.06) 0%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   }
 
-  /* Mandatory dialog/modal accessibility & overscroll rules from modern web guidance */
+  /* ── Accessibility ───────────────────────────────────────────── */
   dialog:modal {
     overscroll-behavior: contain;
   }
   dialog::backdrop {
     overflow: hidden;
     overscroll-behavior: contain;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
-/* Custom scrollbars - slim & unobtrusive */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+/* ─── Scrollbars ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
+  background: var(--line-strong);
   border-radius: 9999px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--fg-subtle);
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ─── Typography helpers ─────────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-instrument-serif), "Georgia", "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* mono numbers */
+.font-mono-numbers {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-.font-mono-numbers {
-  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-variant-numeric: tabular-nums;
+/* single uppercase eyebrow — only for landing */
+.eyebrow-caps {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-/* Focus outline standard */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+/* ─── Page mount animation ───────────────────────────────────────────────── */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+.page-enter {
+  animation: page-enter 0.18s ease-out both;
+}
+
+/* ─── Animate-in helper (command palette etc.) ───────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-in { animation: fade-in 0.12s ease-out both; }
+.fade-in    { animation-name: fade-in; }
+
+/* ─── Number count-up shimmer ────────────────────────────────────────────── */
+@keyframes count-rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.count-rise { animation: count-rise 0.25s ease-out both; }

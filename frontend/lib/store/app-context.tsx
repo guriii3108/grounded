@@ -148,7 +148,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const addDocument = (collectionId: string, file: File | { name: string; size: number }) => {
     const ext = file.name.split(".").pop()?.toLowerCase() || "txt";
     const docType: DocumentItem["type"] = ["pdf", "docx", "md", "txt"].includes(ext)
-      ? (ext as any)
+      ? (ext as DocumentItem["type"])
       : "pdf";
 
     const newDocId = `doc-${Date.now()}`;

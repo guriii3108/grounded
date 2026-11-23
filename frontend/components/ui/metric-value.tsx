@@ -9,7 +9,7 @@ interface MetricValueProps {
   label: string;
   value: string | number;
   delta?: number;
-  inverseDelta?: boolean; // If true, negative delta is good (e.g. latency, cost)
+  inverseDelta?: boolean;
   isPercentDelta?: boolean;
   tooltip?: string;
   subtitle?: string;
@@ -30,36 +30,51 @@ export function MetricValue({
 }: MetricValueProps) {
   const deltaInfo = delta !== undefined ? formatDelta(delta, inverseDelta, isPercentDelta) : null;
 
-  const sizeClasses = {
-    sm: "text-lg",
+  const valueSizes = {
+    sm: "text-xl",
     md: "text-2xl",
     lg: "text-3xl",
   }[size];
 
   return (
-    <div className={cn("flex flex-col p-3 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)]", className)}>
-      <div className="flex items-center justify-between text-xs text-[var(--fg-muted)] mb-1">
-        <span className="font-medium tracking-wide uppercase text-[10px]">{label}</span>
+    <div className={cn("flex flex-col min-w-0", className)}>
+      {/* Label */}
+      <div className="flex items-center gap-1 mb-1">
+        <span className="text-xs text-[var(--muted)]">{label}</span>
         {tooltip && (
-          <span title={tooltip} className="cursor-help text-[var(--fg-subtle)] hover:text-[var(--fg)] transition-colors">
-            <HelpCircle className="w-3.5 h-3.5" />
+          <span
+            title={tooltip}
+            className="cursor-help text-[var(--subtle)] hover:text-[var(--muted)] transition-colors"
+          >
+            <HelpCircle className="w-3 h-3" />
           </span>
         )}
       </div>
 
+      {/* Value + inline delta */}
       <div className="flex items-baseline gap-2">
-        <span className={cn("font-mono font-semibold tracking-tight text-[var(--fg)] tabular-nums", sizeClasses)}>
+        <span
+          className={cn(
+            "font-mono-numbers font-semibold tracking-tight text-[var(--ink)] tabular-nums count-rise",
+            valueSizes
+          )}
+        >
           {value}
         </span>
         {deltaInfo && (
-          <span className={cn("font-mono text-xs font-medium tabular-nums", deltaInfo.colorClass)}>
+          <span
+            className={cn(
+              "font-mono-numbers text-xs font-medium tabular-nums",
+              deltaInfo.colorClass
+            )}
+          >
             {deltaInfo.text}
           </span>
         )}
       </div>
 
       {subtitle && (
-        <span className="text-[11px] text-[var(--fg-subtle)] mt-1 truncate">
+        <span className="text-[11px] text-[var(--subtle)] mt-0.5 truncate">
           {subtitle}
         </span>
       )}

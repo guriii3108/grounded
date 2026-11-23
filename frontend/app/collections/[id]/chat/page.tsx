@@ -16,24 +16,20 @@ import {
   PanelRightOpen,
   Copy,
   Check,
-  RefreshCw,
   Search,
-  Sparkles,
-  Layers,
   ArrowLeft,
   X,
   FileText,
-  Sliders,
   BookmarkPlus,
-  HelpCircle,
 } from "lucide-react";
 import { cn } from "../../../../lib/utils";
+import { Mascot } from "../../../../components/ui/mascot";
 
 function GroundedChatContent() {
   const params = useParams();
   const router = useRouter();
   const collectionId = params.id as string;
-  const { collections, providers, savePipelineConfig } = useApp();
+  const { collections, savePipelineConfig } = useApp();
 
   const collection = collections.find((c) => c.id === collectionId);
 
@@ -119,7 +115,6 @@ function GroundedChatContent() {
 
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-  const streamAbortController = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -209,7 +204,6 @@ function GroundedChatContent() {
       : `Based on the ingested annual reports, Microsoft noted that its cloud AI scaling depends critically upon specialized third-party silicon and high-bandwidth memory suppliers [1]. Wafer backlogs and packaging constraints represent key margin risks [1]. Furthermore, capital expenditures for cloud PP&E rose to $55.7 billion in fiscal 2025 [2].`;
 
     // Stream tokens
-    let charIdx = 0;
     const tokens = fullResponse.split(" ");
     let tokenIdx = 0;
 
@@ -289,12 +283,12 @@ function GroundedChatContent() {
       {/* Left/Main: Conversation Pane */}
       <div className="flex-1 flex flex-col min-w-0 h-full border-r border-[var(--border)] relative">
         {/* Header Strip with Collection Context & Runtime Config */}
-        <div className="h-11 px-4 border-b border-[var(--border)] bg-[var(--bg-subtle)] flex items-center justify-between gap-3 shrink-0 text-xs">
+        <div className="h-11 px-4 border-b border-[var(--border)] bg-[var(--surface-2)] flex items-center justify-between gap-3 shrink-0 text-xs">
           <div className="flex items-center gap-2 min-w-0">
             <button
               type="button"
               onClick={() => router.push(`/collections/${collectionId}`)}
-              className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+              className="p-1 rounded text-[var(--subtle)] hover:text-[var(--fg)] cursor-pointer"
               title="Back to Collection"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -302,7 +296,7 @@ function GroundedChatContent() {
             <span className="font-semibold text-[var(--fg)] truncate">
               {collection?.name || "Collection"}
             </span>
-            <span className="text-[var(--fg-subtle)]">•</span>
+            <span className="text-[var(--subtle)]">•</span>
             <ConfigTags config={activeConfig} />
           </div>
 
@@ -315,7 +309,7 @@ function GroundedChatContent() {
                 "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border transition-colors cursor-pointer",
                 isConfigOpen
                   ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                  : "bg-[var(--bg-elevated)] text-[var(--fg)] border-[var(--border)] hover:bg-[var(--bg-subtle)]"
+                  : "bg-[var(--surface)] text-[var(--fg)] border-[var(--border)] hover:bg-[var(--surface-2)]"
               )}
             >
               <Settings className="w-3.5 h-3.5" />
@@ -327,7 +321,7 @@ function GroundedChatContent() {
               type="button"
               onClick={() => setSourcesPanelOpen((p) => !p)}
               title={sourcesPanelOpen ? "Collapse Sources" : "Expand Sources"}
-              className="p-1.5 rounded-md border border-[var(--border)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-subtle)] text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+              className="p-1.5 rounded-md border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)] text-[var(--subtle)] hover:text-[var(--fg)] cursor-pointer"
             >
               {sourcesPanelOpen ? (
                 <PanelRightClose className="w-4 h-4" />
@@ -340,7 +334,7 @@ function GroundedChatContent() {
 
         {/* Config Flyout / Popover */}
         {isConfigOpen && (
-          <div className="absolute top-12 left-4 right-4 sm:left-auto sm:right-16 sm:w-96 p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-strong)] shadow-2xl z-30 text-xs space-y-3.5 animate-in fade-in zoom-in-95 duration-150">
+          <div className="absolute top-12 left-4 right-4 sm:left-auto sm:right-16 sm:w-96 p-4 rounded-xl bg-[var(--surface)] border border-[var(--line-strong)] shadow-2xl z-30 text-xs space-y-3.5 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
               <span className="font-semibold text-sm text-[var(--fg)]">
                 Pipeline Query Configuration
@@ -348,14 +342,14 @@ function GroundedChatContent() {
               <button
                 type="button"
                 onClick={() => setIsConfigOpen(false)}
-                className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+                className="p-1 rounded text-[var(--subtle)] hover:text-[var(--fg)] cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
 
             <div>
-              <label className="block text-[var(--fg-subtle)] font-medium mb-1">
+              <label className="block text-[var(--subtle)] font-medium mb-1">
                 Chat Model
               </label>
               <select
@@ -375,7 +369,7 @@ function GroundedChatContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[var(--fg-subtle)] font-medium mb-1">
+                <label className="block text-[var(--subtle)] font-medium mb-1">
                   Retrieval Mode
                 </label>
                 <select
@@ -383,7 +377,7 @@ function GroundedChatContent() {
                   onChange={(e) =>
                     setActiveConfig((prev) => ({
                       ...prev,
-                      retrieval_mode: e.target.value as any,
+                      retrieval_mode: e.target.value as PipelineConfig["retrieval_mode"],
                     }))
                   }
                   className="w-full px-2.5 py-1.5 rounded-md border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--fg)]"
@@ -395,7 +389,7 @@ function GroundedChatContent() {
               </div>
 
               <div>
-                <label className="block text-[var(--fg-subtle)] font-medium mb-1">
+                <label className="block text-[var(--subtle)] font-medium mb-1">
                   Top-K Chunks
                 </label>
                 <input
@@ -415,7 +409,7 @@ function GroundedChatContent() {
             </div>
 
             <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
-              <span className="text-[10px] text-[var(--fg-subtle)]">
+              <span className="text-[10px] text-[var(--subtle)]">
                 Bridge from Chat to Eval benchmark
               </span>
               <button
@@ -454,12 +448,12 @@ function GroundedChatContent() {
               {/* Message Bubble */}
               <div
                 className={cn(
-                  "p-4 rounded-xl text-[14px] leading-relaxed transition-all",
+                  "p-4 rounded-[14px] transition-all",
                   msg.role === "user"
-                    ? "bg-[var(--accent)] text-white rounded-br-xs max-w-xl"
+                    ? "bg-[var(--ink)] text-[var(--surface)] rounded-br-xs max-w-xl text-sm leading-relaxed"
                     : msg.isNotFound
-                    ? "bg-[var(--bg-subtle)] text-[var(--fg-muted)] border border-[var(--border)] max-w-2xl italic"
-                    : "bg-[var(--bg-elevated)] text-[var(--fg)] border border-[var(--border)] shadow-xs max-w-2xl"
+                    ? "bg-[var(--surface-2)] text-[var(--muted)] border border-[var(--line)] max-w-2xl text-base leading-[1.7] italic"
+                    : "bg-[var(--surface)] text-[var(--ink)] border border-[var(--line)] shadow-xs max-w-2xl text-base leading-[1.7]"
                 )}
               >
                 {msg.role === "assistant"
@@ -468,8 +462,8 @@ function GroundedChatContent() {
 
                 {/* Not found explanation badge */}
                 {msg.isNotFound && (
-                  <div className="mt-3 pt-2 border-t border-[var(--border)] flex items-center justify-between text-xs not-italic">
-                    <span className="text-[var(--fg-subtle)]">
+                  <div className="mt-3 pt-2 border-t border-[var(--line)] flex items-center justify-between text-xs not-italic">
+                    <span className="text-[var(--subtle)]">
                       Model instructed not to guess hallucinated facts.
                     </span>
                     <button
@@ -488,7 +482,7 @@ function GroundedChatContent() {
 
               {/* Message Footer (Hoverable action bar) */}
               {msg.role === "assistant" && (
-                <div className="flex items-center gap-3 mt-1.5 px-1 text-[11px] text-[var(--fg-subtle)] font-mono opacity-80 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-3 mt-1.5 px-1 text-[11px] text-[var(--subtle)] font-mono opacity-80 group-hover:opacity-100 transition-opacity">
                   {msg.latencyMs && <span>{formatDuration(msg.latencyMs)}</span>}
                   {msg.tokens && (
                     <>
@@ -525,17 +519,23 @@ function GroundedChatContent() {
               )}
             </div>
           ))}
+          {isStreaming && (
+            <div className="flex items-center gap-2.5 px-2 py-1 text-xs text-[var(--muted)]">
+              <Mascot name="retriever" pose="thinking" size={24} />
+              <span className="italic font-display text-sm text-[var(--ink)]">Retrieving grounding chunks and synthesizing claims…</span>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
 
         {/* Composer Bar */}
-        <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-subtle)]/60">
-          <div className="max-w-3xl mx-auto flex items-end gap-2 p-2 rounded-xl border border-[var(--border-strong)] bg-[var(--bg-elevated)] focus-within:border-[var(--accent)] shadow-xs transition-colors">
+        <div className="p-4 border-t border-[var(--line)] bg-[var(--surface-2)]/60">
+          <div className="max-w-3xl mx-auto flex items-end gap-2 p-2 rounded-[14px] border border-[var(--line-strong)] bg-[var(--surface)] focus-within:border-[var(--accent)] shadow-xs transition-colors">
             <textarea
               ref={textareaRef}
               rows={1}
               value={input}
-              placeholder="Ask a question grounded in this collection... (Enter sends, Shift+Enter for newline)"
+              placeholder="Ask a question grounded in this collection… (Enter sends, Shift+Enter for newline)"
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -543,14 +543,14 @@ function GroundedChatContent() {
                   handleSend();
                 }
               }}
-              className="flex-1 max-h-32 bg-transparent text-xs text-[var(--fg)] placeholder:text-[var(--fg-subtle)] resize-none outline-none p-1.5"
+              className="flex-1 max-h-32 bg-transparent text-sm text-[var(--ink)] placeholder:text-[var(--subtle)] resize-none outline-none p-2"
             />
 
             {isStreaming ? (
               <button
                 type="button"
                 onClick={cancelStreaming}
-                className="p-2 rounded-lg bg-[var(--negative)] text-white hover:bg-[var(--negative)]/90 transition-colors cursor-pointer"
+                className="p-2.5 rounded-full bg-[var(--negative)] text-white hover:opacity-90 transition-opacity cursor-pointer shrink-0"
                 title="Stop generation"
               >
                 <Square className="w-4 h-4 fill-current" />
@@ -561,10 +561,10 @@ function GroundedChatContent() {
                 onClick={handleSend}
                 disabled={!input.trim()}
                 className={cn(
-                  "p-2 rounded-lg text-white transition-colors cursor-pointer",
+                  "p-2.5 rounded-full transition-all cursor-pointer shrink-0",
                   input.trim()
-                    ? "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
-                    : "bg-[var(--border-strong)] text-[var(--fg-subtle)] cursor-not-allowed"
+                    ? "bg-[var(--ink)] text-[var(--surface)] hover:opacity-90"
+                    : "bg-[var(--line-strong)] text-[var(--subtle)] cursor-not-allowed"
                 )}
                 title="Send message (Enter)"
               >
@@ -577,7 +577,7 @@ function GroundedChatContent() {
 
       {/* Right: Sources Panel */}
       {sourcesPanelOpen && (
-        <aside className="w-80 sm:w-96 border-l border-[var(--border)] bg-[var(--bg-subtle)] flex flex-col h-full shrink-0 select-none animate-in slide-in-from-right-4 duration-200">
+        <aside className="w-80 sm:w-96 border-l border-[var(--border)] bg-[var(--surface-2)] flex flex-col h-full shrink-0 select-none animate-in slide-in-from-right-4 duration-200">
           <div className="h-11 px-4 border-b border-[var(--border)] flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-[var(--accent)]" />
@@ -588,7 +588,7 @@ function GroundedChatContent() {
             <button
               type="button"
               onClick={() => setSourcesPanelOpen(false)}
-              className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+              className="p-1 rounded text-[var(--subtle)] hover:text-[var(--fg)] cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -618,7 +618,7 @@ function GroundedChatContent() {
                 {/* Retrieved but not cited divider */}
                 {activeMessage.retrievedChunks.some((c) => !c.isCited) && (
                   <div className="space-y-2.5 pt-2 border-t border-[var(--border)]">
-                    <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider block">
+                    <span className="text-[10px] uppercase font-semibold text-[var(--subtle)] tracking-wider block">
                       Retrieved but Not Cited
                     </span>
                     {activeMessage.retrievedChunks
@@ -635,7 +635,7 @@ function GroundedChatContent() {
                 )}
               </>
             ) : (
-              <div className="text-center py-12 text-xs text-[var(--fg-subtle)]">
+              <div className="text-center py-12 text-xs text-[var(--subtle)]">
                 Ask a question to see retrieved document chunks here.
               </div>
             )}
@@ -651,7 +651,7 @@ function GroundedChatContent() {
             onClick={() => setRetrievalDrawerChunk(null)}
           />
 
-          <div className="relative w-full max-w-xl bg-[var(--bg-elevated)] border-l border-[var(--border-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
+          <div className="relative w-full max-w-xl bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
             <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-2">
                 <Search className="w-4 h-4 text-[var(--accent)]" />
@@ -662,15 +662,15 @@ function GroundedChatContent() {
               <button
                 type="button"
                 onClick={() => setRetrievalDrawerChunk(null)}
-                className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+                className="p-1 rounded text-[var(--subtle)] hover:text-[var(--fg)] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="p-4 flex-1 overflow-y-auto space-y-4">
-              <div className="p-3 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1 font-mono text-[11px]">
-                <div className="flex justify-between text-[var(--fg-subtle)]">
+              <div className="p-3 rounded-lg bg-[var(--surface-2)] border border-[var(--border)] space-y-1 font-mono text-[11px]">
+                <div className="flex justify-between text-[var(--subtle)]">
                   <span>Latency: {retrievalDrawerChunk.latencyMs}ms</span>
                   <span>Tokens: {retrievalDrawerChunk.tokens}</span>
                 </div>
@@ -680,7 +680,7 @@ function GroundedChatContent() {
               </div>
 
               <div>
-                <span className="text-[10px] font-semibold text-[var(--fg-subtle)] uppercase tracking-wider block mb-2">
+                <span className="text-[10px] font-semibold text-[var(--subtle)] uppercase tracking-wider block mb-2">
                   All Retrieved Chunks with Fusion Scores
                 </span>
                 <div className="space-y-3">
@@ -697,10 +697,10 @@ function GroundedChatContent() {
                           Fusion Score: {(chunk.score * 100).toFixed(1)}%
                         </span>
                       </div>
-                      <p className="text-[11px] text-[var(--fg-muted)] font-sans">
+                      <p className="text-[11px] text-[var(--muted)] font-sans">
                         {chunk.text}
                       </p>
-                      <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--fg-subtle)] pt-1 border-t border-[var(--border)]/50">
+                      <div className="flex items-center gap-2 text-[10px] font-mono text-[var(--subtle)] pt-1 border-t border-[var(--border)]/50">
                         <span>Type: {chunk.retrievalType}</span>
                         <span>•</span>
                         <span>Cited: {chunk.isCited ? "Yes" : "No"}</span>
@@ -711,7 +711,7 @@ function GroundedChatContent() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-subtle)] flex justify-end">
+            <div className="p-4 border-t border-[var(--border)] bg-[var(--surface-2)] flex justify-end">
               <button
                 type="button"
                 onClick={() => setRetrievalDrawerChunk(null)}
@@ -729,7 +729,7 @@ function GroundedChatContent() {
 
 export default function GroundedChatPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)]">Loading grounded chat...</div>}>
+    <Suspense fallback={<div className="p-8 text-xs text-[var(--muted)]">Loading grounded chat...</div>}>
       <GroundedChatContent />
     </Suspense>
   );

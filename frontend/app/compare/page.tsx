@@ -5,20 +5,13 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useApp } from "../../lib/store/app-context";
 import { ConfigDiff } from "../../components/domain/config-diff";
 import { DeltaBar } from "../../components/ui/delta-bar";
-import { formatDelta, formatDuration, formatCost } from "../../lib/format";
-import { EvalRun, EvalResult } from "../../lib/types";
+import { formatDuration, formatCost } from "../../lib/format";
+import { EvalResult } from "../../lib/types";
 import {
-  GitCompare,
-  ArrowRight,
   Copy,
   Check,
   AlertTriangle,
-  SlidersHorizontal,
-  ChevronDown,
   X,
-  FileText,
-  Scale,
-  Sparkles,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 
@@ -70,7 +63,6 @@ function CompareContent() {
       }
     });
 
-    // Default sort by largest regression (lowest deltaFaithfulness first)
     return pairs.sort((a, b) => a.deltaFaithfulness - b.deltaFaithfulness);
   }, [runA, runB]);
 
@@ -124,31 +116,28 @@ function CompareContent() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      {/* Header Selector Strip */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
+    <div className="pt-12 pb-16 px-6 sm:px-10 max-w-7xl mx-auto space-y-8">
+      {/* Header Selector Strip: generous 48px top spacing, serif title, pill actions */}
+      <div className="flex flex-col lg:flex-row lg:items-baseline justify-between gap-4 pb-4 border-b border-[var(--line)]">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-lg bg-[var(--accent)] text-white flex items-center justify-center">
-              <GitCompare className="w-4 h-4" />
-            </span>
-            <h1 className="text-xl font-bold tracking-tight text-[var(--fg)]">
-              A/B Pipeline Comparison
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]">
+              A/B pipeline comparison
             </h1>
           </div>
-          <p className="text-xs text-[var(--fg-muted)] mt-1">
+          <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
             Compare two experimental runs side-by-side to verify improvements and catch regressions.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
           {/* Run A Selector */}
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="font-semibold text-[var(--fg-subtle)]">A:</span>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="font-medium text-[var(--muted)]">A:</span>
             <select
               value={runA.id}
               onChange={(e) => handleSelectRunA(e.target.value)}
-              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-xs text-[var(--fg)] font-mono"
+              className="px-3 py-1.5 rounded-[10px] border border-[var(--line)] bg-[var(--surface)] text-xs text-[var(--ink)] font-mono-numbers"
             >
               {evalRuns.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -158,15 +147,15 @@ function CompareContent() {
             </select>
           </div>
 
-          <span className="text-[var(--fg-subtle)] font-mono text-xs">vs</span>
+          <span className="text-[var(--subtle)] text-xs">vs</span>
 
           {/* Run B Selector */}
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="font-semibold text-[var(--fg-subtle)]">B:</span>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="font-medium text-[var(--muted)]">B:</span>
             <select
               value={runB.id}
               onChange={(e) => handleSelectRunB(e.target.value)}
-              className="px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-xs text-[var(--fg)] font-mono"
+              className="px-3 py-1.5 rounded-[10px] border border-[var(--line)] bg-[var(--surface)] text-xs text-[var(--ink)] font-mono-numbers"
             >
               {evalRuns.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -180,21 +169,21 @@ function CompareContent() {
           <button
             type="button"
             onClick={copyMarkdownSummary}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-strong)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-subtle)] text-xs font-medium text-[var(--fg)] transition-colors shadow-xs cursor-pointer ml-auto"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--line)] bg-[var(--surface)] hover:bg-[var(--surface-2)] text-xs font-medium text-[var(--ink)] transition-colors cursor-pointer ml-auto shadow-xs"
           >
             {copiedMarkdown ? (
               <Check className="w-3.5 h-3.5 text-[var(--positive)]" />
             ) : (
-              <Copy className="w-3.5 h-3.5" />
+              <Copy className="w-3.5 h-3.5 text-[var(--muted)]" />
             )}
-            <span>{copiedMarkdown ? "Copied Markdown!" : "Copy as Markdown"}</span>
+            <span>{copiedMarkdown ? "Copied markdown" : "Copy markdown summary"}</span>
           </button>
         </div>
       </div>
 
       {/* Warning when test sets or judges differ */}
       {(differentTestSets || differentJudges) && (
-        <div className="p-3 rounded-xl border border-[var(--warning)]/40 bg-[var(--warning-subtle)]/60 text-xs text-[var(--fg)] flex items-center gap-2.5">
+        <div className="p-4 rounded-[14px] border border-[var(--warning)]/30 bg-[var(--warning-subtle)] text-xs text-[var(--ink)] flex items-center gap-3">
           <AlertTriangle className="w-4 h-4 text-[var(--warning)] shrink-0" />
           <span>
             {differentTestSets
@@ -204,184 +193,174 @@ function CompareContent() {
         </div>
       )}
 
-      {/* 1. Config Diff First (Git-diff style) */}
+      {/* 1. Config Diff First: compact inline list */}
       <ConfigDiff configA={runA.config} configB={runB.config} />
 
-      {/* 2. Aggregate Metric Deltas with Direction Semantics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+      {/* 2. Aggregate Metric Deltas: one row, no individual boxes, dividers between metrics */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-[var(--line)] py-5 border-y border-[var(--line)] bg-[var(--surface)] rounded-[14px]">
         {/* Recall */}
-        <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
-            Recall@k
-          </span>
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-xs text-[var(--fg-subtle)]">
+        <div className="p-4 space-y-1">
+          <span className="text-xs text-[var(--muted)] block">Recall@k</span>
+          <div className="flex items-baseline gap-2 font-mono-numbers">
+            <span className="text-xs text-[var(--subtle)]">
               {(runA.recallAtK * 100).toFixed(0)}%
             </span>
-            <span className="text-xs text-[var(--fg-subtle)]">→</span>
-            <span className="text-xl font-bold text-[var(--fg)] tabular-nums">
+            <span className="text-xs text-[var(--subtle)]">→</span>
+            <span className="text-2xl font-semibold text-[var(--ink)] tabular-nums">
               {(runB.recallAtK * 100).toFixed(0)}%
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold tabular-nums ml-auto",
-                deltaRecall >= 0 ? "text-[var(--positive)]" : "text-[var(--negative)]"
-              )}
-            >
-              {deltaRecall >= 0 ? "▲ +" : "▼ "}
-              {(deltaRecall * 100).toFixed(0)}%
-            </span>
           </div>
+          <span
+            className={cn(
+              "text-xs font-mono-numbers block tabular-nums",
+              deltaRecall >= 0 ? "text-[var(--positive)] font-medium" : "text-[var(--negative)] font-medium"
+            )}
+          >
+            {deltaRecall >= 0 ? "+" : ""}
+            {(deltaRecall * 100).toFixed(0)}% delta
+          </span>
         </div>
 
         {/* Faithfulness */}
-        <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
-            Faithfulness
-          </span>
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-xs text-[var(--fg-subtle)]">
+        <div className="p-4 space-y-1">
+          <span className="text-xs text-[var(--muted)] block">Faithfulness</span>
+          <div className="flex items-baseline gap-2 font-mono-numbers">
+            <span className="text-xs text-[var(--subtle)]">
               {(runA.faithfulness * 100).toFixed(0)}%
             </span>
-            <span className="text-xs text-[var(--fg-subtle)]">→</span>
-            <span className="text-xl font-bold text-[var(--fg)] tabular-nums">
+            <span className="text-xs text-[var(--subtle)]">→</span>
+            <span className="text-2xl font-semibold text-[var(--ink)] tabular-nums">
               {(runB.faithfulness * 100).toFixed(0)}%
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold tabular-nums ml-auto",
-                deltaFaith >= 0 ? "text-[var(--positive)]" : "text-[var(--negative)]"
-              )}
-            >
-              {deltaFaith >= 0 ? "▲ +" : "▼ "}
-              {(deltaFaith * 100).toFixed(0)}%
-            </span>
           </div>
+          <span
+            className={cn(
+              "text-xs font-mono-numbers block tabular-nums",
+              deltaFaith >= 0 ? "text-[var(--positive)] font-medium" : "text-[var(--negative)] font-medium"
+            )}
+          >
+            {deltaFaith >= 0 ? "+" : ""}
+            {(deltaFaith * 100).toFixed(0)}% delta
+          </span>
         </div>
 
-        {/* p95 Latency (Down is green!) */}
-        <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
-            p95 Latency
-          </span>
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-xs text-[var(--fg-subtle)]">
+        {/* p95 Latency */}
+        <div className="p-4 space-y-1">
+          <span className="text-xs text-[var(--muted)] block">p95 Latency</span>
+          <div className="flex items-baseline gap-2 font-mono-numbers">
+            <span className="text-xs text-[var(--subtle)]">
               {formatDuration(runA.p95LatencyMs)}
             </span>
-            <span className="text-xs text-[var(--fg-subtle)]">→</span>
-            <span className="text-xl font-bold text-[var(--fg)] tabular-nums">
+            <span className="text-xs text-[var(--subtle)]">→</span>
+            <span className="text-2xl font-semibold text-[var(--ink)] tabular-nums">
               {formatDuration(runB.p95LatencyMs)}
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold tabular-nums ml-auto",
-                deltaLatency <= 0 ? "text-[var(--positive)]" : "text-[var(--negative)]"
-              )}
-            >
-              {deltaLatency <= 0 ? "▲ faster" : "▼ slower"}
-            </span>
           </div>
+          <span
+            className={cn(
+              "text-xs font-mono-numbers block tabular-nums",
+              deltaLatency <= 0 ? "text-[var(--positive)] font-medium" : "text-[var(--negative)] font-medium"
+            )}
+          >
+            {deltaLatency <= 0 ? "faster" : "slower"} ({formatDuration(Math.abs(deltaLatency))})
+          </span>
         </div>
 
-        {/* Token Cost (Down is green!) */}
-        <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
-            Token Cost
-          </span>
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-xs text-[var(--fg-subtle)]">
+        {/* Token Cost */}
+        <div className="p-4 space-y-1">
+          <span className="text-xs text-[var(--muted)] block">Token Cost</span>
+          <div className="flex items-baseline gap-2 font-mono-numbers">
+            <span className="text-xs text-[var(--subtle)]">
               {formatCost(runA.tokenCostUsd)}
             </span>
-            <span className="text-xs text-[var(--fg-subtle)]">→</span>
-            <span className="text-xl font-bold text-[var(--fg)] tabular-nums">
+            <span className="text-xs text-[var(--subtle)]">→</span>
+            <span className="text-2xl font-semibold text-[var(--ink)] tabular-nums">
               {formatCost(runB.tokenCostUsd)}
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold tabular-nums ml-auto",
-                deltaCost <= 0 ? "text-[var(--positive)]" : "text-[var(--negative)]"
-              )}
-            >
-              {deltaCost <= 0 ? "▲ saving" : "▼ higher"}
-            </span>
           </div>
+          <span
+            className={cn(
+              "text-xs font-mono-numbers block tabular-nums",
+              deltaCost <= 0 ? "text-[var(--positive)] font-medium" : "text-[var(--negative)] font-medium"
+            )}
+          >
+            {deltaCost <= 0 ? "saving" : "increase"} ({formatCost(Math.abs(deltaCost))})
+          </span>
         </div>
 
         {/* MRR */}
-        <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-1 col-span-2 sm:col-span-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
-            MRR Quality
-          </span>
-          <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-xs text-[var(--fg-subtle)]">
+        <div className="p-4 space-y-1">
+          <span className="text-xs text-[var(--muted)] block">MRR Rank Quality</span>
+          <div className="flex items-baseline gap-2 font-mono-numbers">
+            <span className="text-xs text-[var(--subtle)]">
               {runA.mrr.toFixed(2)}
             </span>
-            <span className="text-xs text-[var(--fg-subtle)]">→</span>
-            <span className="text-xl font-bold text-[var(--fg)] tabular-nums">
+            <span className="text-xs text-[var(--subtle)]">→</span>
+            <span className="text-2xl font-semibold text-[var(--ink)] tabular-nums">
               {runB.mrr.toFixed(2)}
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold tabular-nums ml-auto",
-                deltaMRR >= 0 ? "text-[var(--positive)]" : "text-[var(--negative)]"
-              )}
-            >
-              {deltaMRR >= 0 ? "+" : ""}
-              {deltaMRR.toFixed(2)}
-            </span>
           </div>
+          <span
+            className={cn(
+              "text-xs font-mono-numbers block tabular-nums",
+              deltaMRR >= 0 ? "text-[var(--positive)] font-medium" : "text-[var(--negative)] font-medium"
+            )}
+          >
+            {deltaMRR >= 0 ? "+" : ""}
+            {deltaMRR.toFixed(2)} delta
+          </span>
         </div>
       </div>
 
       {/* 3. Filter Toolbar & Regression Focus */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 cursor-pointer text-[var(--fg)] font-medium">
+          <label className="flex items-center gap-2 cursor-pointer text-[var(--ink)] font-medium">
             <input
               type="checkbox"
               checked={filterChangedOnly}
               onChange={(e) => setFilterChangedOnly(e.target.checked)}
-              className="rounded border-[var(--border-strong)] text-[var(--accent)]"
+              className="rounded border-[var(--line-strong)] text-[var(--accent)] cursor-pointer"
             />
-            <span>Only Changed ({filteredPairs.length})</span>
+            <span>Only changed ({filteredPairs.length})</span>
           </label>
 
-          <span className="text-[var(--fg-subtle)]">•</span>
+          <span className="text-[var(--subtle)]">•</span>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[var(--fg-subtle)]">Filter:</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[var(--muted)]">Filter:</span>
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value as any)}
-              className="px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--bg-elevated)] text-xs text-[var(--fg)]"
+              onChange={(e) => setFilterType(e.target.value as "all" | "regressions" | "improvements")}
+              className="px-3 py-1.5 rounded-[10px] border border-[var(--line)] bg-[var(--surface)] text-xs text-[var(--ink)]"
             >
-              <option value="all">All Paired Questions</option>
+              <option value="all">All paired questions</option>
               <option value="regressions">Regressions (A &gt; B)</option>
               <option value="improvements">Improvements (B &gt; A)</option>
             </select>
           </div>
         </div>
 
-        <span className="text-[11px] font-mono text-[var(--fg-subtle)]">
-          Default sorted by largest regression
+        <span className="text-xs text-[var(--muted)]">
+          Sorted by largest regression first
         </span>
       </div>
 
-      {/* 4. Per-Question High-Density Table with Diverging Delta Bars */}
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] overflow-hidden">
+      {/* 4. Per-Question High-Density Table with Diverging Delta Bars (44px rows, hairline borders) */}
+      <div className="rounded-[14px] border border-[var(--line)] bg-[var(--surface)] overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[var(--bg-subtle)] border-b border-[var(--border)] text-[var(--fg-subtle)] font-medium">
-              <tr>
-                <th className="py-2.5 px-4 font-semibold">Question Benchmark</th>
-                <th className="py-2.5 px-4 font-semibold text-right w-24">Run A</th>
-                <th className="py-2.5 px-4 font-semibold text-right w-24">Run B</th>
-                <th className="py-2.5 px-4 font-semibold text-center w-36">Faithfulness Δ</th>
-                <th className="py-2.5 px-4 font-semibold text-center w-32">Diverging Bar</th>
-                <th className="py-2.5 px-4 text-right w-20">Inspect</th>
+          <table className="w-full text-left text-sm">
+            <thead className="bg-[var(--surface-2)] border-b border-[var(--line)] text-xs text-[var(--muted)] font-medium">
+              <tr className="h-10">
+                <th className="py-2.5 px-4 font-normal">Question Benchmark</th>
+                <th className="py-2.5 px-4 font-normal text-right w-24">Run A</th>
+                <th className="py-2.5 px-4 font-normal text-right w-24">Run B</th>
+                <th className="py-2.5 px-4 font-normal text-center w-36">Faithfulness Δ</th>
+                <th className="py-2.5 px-4 font-normal text-center w-32">Diverging Bar</th>
+                <th className="py-2.5 px-4 text-right font-normal w-20">Inspect</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--border)]">
+            <tbody className="divide-y divide-[var(--line)]">
               {filteredPairs.map((pair) => {
                 const delta = pair.deltaFaithfulness;
                 const isRegression = delta < -0.01;
@@ -392,47 +371,47 @@ function CompareContent() {
                     key={pair.questionId}
                     onClick={() => setSelectedPair({ resA: pair.resA, resB: pair.resB })}
                     className={cn(
-                      "hover:bg-[var(--bg-subtle)]/70 transition-colors cursor-pointer group",
-                      isRegression && "bg-[var(--negative-subtle)]/15"
+                      "h-11 hover:bg-[var(--surface-2)]/60 transition-colors cursor-pointer group",
+                      isRegression && "bg-[var(--negative-subtle)]"
                     )}
                   >
-                    <td className="py-3 px-4 font-medium text-[var(--fg)]">
+                    <td className="py-2.5 px-4 font-medium text-[var(--ink)]">
                       <p className="line-clamp-1 group-hover:text-[var(--accent)] transition-colors">
                         {pair.question}
                       </p>
                     </td>
 
-                    <td className="py-3 px-4 text-right font-mono text-[var(--fg-muted)] tabular-nums">
+                    <td className="py-2.5 px-4 text-right font-mono-numbers text-xs text-[var(--muted)] tabular-nums">
                       {(pair.resA.faithfulness * 100).toFixed(0)}%
                     </td>
 
-                    <td className="py-3 px-4 text-right font-mono font-semibold text-[var(--fg)] tabular-nums">
+                    <td className="py-2.5 px-4 text-right font-mono-numbers text-xs font-semibold text-[var(--ink)] tabular-nums">
                       {(pair.resB.faithfulness * 100).toFixed(0)}%
                     </td>
 
-                    <td className="py-3 px-4 text-center font-mono font-bold tabular-nums">
+                    <td className="py-2.5 px-4 text-center font-mono-numbers text-xs font-semibold tabular-nums">
                       <span
                         className={
                           isImprovement
-                            ? "text-[var(--positive)]"
+                            ? "text-[var(--positive)] font-bold"
                             : isRegression
-                            ? "text-[var(--negative)]"
-                            : "text-[var(--fg-subtle)]"
+                            ? "text-[var(--negative)] font-bold"
+                            : "text-[var(--subtle)]"
                         }
                       >
-                        {delta > 0 ? "▲ +" : delta < 0 ? "▼ " : ""}
+                        {delta > 0 ? "+" : ""}
                         {(delta * 100).toFixed(0)}%
                       </span>
                     </td>
 
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-2.5 px-4 text-center">
                       <div className="flex justify-center">
                         <DeltaBar delta={delta} maxScale={0.5} />
                       </div>
                     </td>
 
-                    <td className="py-3 px-4 text-right">
-                      <span className="text-[11px] text-[var(--accent)] group-hover:underline">
+                    <td className="py-2.5 px-4 text-right">
+                      <span className="text-xs text-[var(--accent)] group-hover:underline">
                         Diff
                       </span>
                     </td>
@@ -444,110 +423,110 @@ function CompareContent() {
         </div>
       </div>
 
-      {/* 5. Side-by-Side Drill-In Drawer on Row Click */}
+      {/* 5. Side-by-Side Drill-In Drawer */}
       {selectedPair && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-150">
           <div
             className="fixed inset-0"
             onClick={() => setSelectedPair(null)}
           />
 
-          <div className="relative w-full max-w-4xl bg-[var(--bg-elevated)] border-l border-[var(--border-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
-            <div className="flex items-center justify-between p-4 border-b border-[var(--border)] shrink-0">
+          <div className="relative w-full max-w-4xl bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
+            <div className="flex items-center justify-between p-5 border-b border-[var(--line)] shrink-0">
               <div>
-                <span className="font-semibold text-sm text-[var(--fg)]">
-                  Side-by-Side Answer & Chunk Diff
+                <span className="font-display text-lg text-[var(--ink)]">
+                  Side-by-side answer & chunk diff
                 </span>
-                <p className="text-[11px] text-[var(--fg-muted)] mt-0.5 line-clamp-1">
+                <p className="text-xs text-[var(--muted)] mt-0.5 line-clamp-1">
                   {selectedPair.resA.question}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedPair(null)}
-                className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+                className="p-1 rounded text-[var(--subtle)] hover:text-[var(--ink)] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Column: Run A */}
-              <div className="p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] space-y-4 flex flex-col">
-                <div className="flex items-center justify-between pb-2 border-b border-[var(--border)] font-semibold text-[var(--fg)]">
+              <div className="p-5 rounded-[14px] border border-[var(--line)] bg-[var(--surface-2)] space-y-4 flex flex-col">
+                <div className="flex items-center justify-between pb-3 border-b border-[var(--line)] font-medium text-sm text-[var(--ink)]">
                   <span>Run A: {runA.name}</span>
-                  <span className="font-mono text-[var(--positive)]">
+                  <span className="font-mono-numbers text-[var(--positive)] font-semibold">
                     F: {(selectedPair.resA.faithfulness * 100).toFixed(0)}%
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-semibold text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
-                    Generated Answer
+                  <span className="text-xs text-[var(--muted)] font-medium block mb-1">
+                    Generated answer
                   </span>
-                  <p className="text-xs leading-relaxed text-[var(--fg)] bg-[var(--bg)] p-3 rounded-lg border border-[var(--border)]">
+                  <p className="text-xs leading-relaxed text-[var(--ink)] bg-[var(--surface)] p-3.5 rounded-[10px] border border-[var(--line)]">
                     {selectedPair.resA.generatedAnswer}
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-semibold text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
-                    Judge Reasoning
+                  <span className="text-xs text-[var(--muted)] font-medium block mb-1">
+                    Judge reasoning
                   </span>
-                  <p className="text-[11px] leading-relaxed text-[var(--fg-muted)] italic">
+                  <p className="text-xs leading-relaxed text-[var(--muted)] italic">
                     &ldquo;{selectedPair.resA.judgeReasoning}&rdquo;
                   </p>
                 </div>
 
-                <div className="mt-auto pt-2 border-t border-[var(--border)]">
-                  <span className="text-[10px] font-mono text-[var(--fg-subtle)]">
+                <div className="mt-auto pt-3 border-t border-[var(--line)]">
+                  <span className="text-[11px] font-mono-numbers text-[var(--subtle)]">
                     Retrieved Hit: {selectedPair.resA.retrievedHit ? "Yes (✓)" : "No (✗)"} · Latency: {formatDuration(selectedPair.resA.latencyMs)}
                   </span>
                 </div>
               </div>
 
               {/* Column: Run B */}
-              <div className="p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-subtle)] space-y-4 flex flex-col">
-                <div className="flex items-center justify-between pb-2 border-b border-[var(--border)] font-semibold text-[var(--fg)]">
+              <div className="p-5 rounded-[14px] border border-[var(--line)] bg-[var(--surface-2)] space-y-4 flex flex-col">
+                <div className="flex items-center justify-between pb-3 border-b border-[var(--line)] font-medium text-sm text-[var(--ink)]">
                   <span>Run B: {runB.name}</span>
-                  <span className="font-mono text-[var(--positive)]">
+                  <span className="font-mono-numbers text-[var(--positive)] font-semibold">
                     F: {(selectedPair.resB.faithfulness * 100).toFixed(0)}%
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-semibold text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
-                    Generated Answer
+                  <span className="text-xs text-[var(--muted)] font-medium block mb-1">
+                    Generated answer
                   </span>
-                  <p className="text-xs leading-relaxed text-[var(--fg)] bg-[var(--bg)] p-3 rounded-lg border border-[var(--border)]">
+                  <p className="text-xs leading-relaxed text-[var(--ink)] bg-[var(--surface)] p-3.5 rounded-[10px] border border-[var(--line)]">
                     {selectedPair.resB.generatedAnswer}
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-semibold text-[var(--fg-subtle)] uppercase tracking-wider block mb-1">
-                    Judge Reasoning
+                  <span className="text-xs text-[var(--muted)] font-medium block mb-1">
+                    Judge reasoning
                   </span>
-                  <p className="text-[11px] leading-relaxed text-[var(--fg-muted)] italic">
+                  <p className="text-xs leading-relaxed text-[var(--muted)] italic">
                     &ldquo;{selectedPair.resB.judgeReasoning}&rdquo;
                   </p>
                 </div>
 
-                <div className="mt-auto pt-2 border-t border-[var(--border)]">
-                  <span className="text-[10px] font-mono text-[var(--fg-subtle)]">
+                <div className="mt-auto pt-3 border-t border-[var(--line)]">
+                  <span className="text-[11px] font-mono-numbers text-[var(--subtle)]">
                     Retrieved Hit: {selectedPair.resB.retrievedHit ? "Yes (✓)" : "No (✗)"} · Latency: {formatDuration(selectedPair.resB.latencyMs)}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-subtle)] flex justify-end shrink-0">
+            <div className="p-4 border-t border-[var(--line)] bg-[var(--surface-2)] flex justify-end shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedPair(null)}
-                className="px-4 py-1.5 rounded-lg bg-[var(--accent)] text-white font-medium cursor-pointer"
+                className="px-5 py-2 rounded-full bg-[var(--ink)] text-[var(--surface)] text-xs font-medium cursor-pointer hover:opacity-90 transition-opacity"
               >
-                Close Diff
+                Close diff
               </button>
             </div>
           </div>
@@ -559,7 +538,7 @@ function CompareContent() {
 
 export default function ComparePage() {
   return (
-    <Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)]">Loading comparison...</div>}>
+    <Suspense fallback={<div className="p-8 text-xs text-[var(--muted)]">Loading comparison...</div>}>
       <CompareContent />
     </Suspense>
   );

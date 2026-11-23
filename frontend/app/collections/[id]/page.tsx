@@ -12,13 +12,9 @@ import {
   FileText,
   Database,
   Settings as SettingsIcon,
-  Trash2,
   AlertTriangle,
   RotateCcw,
   X,
-  Layers,
-  ArrowUpRight,
-  CheckCircle2,
   Info,
 } from "lucide-react";
 import { cn } from "../../../lib/utils";
@@ -38,7 +34,7 @@ function CollectionDetailContent() {
 
   if (!collection) {
     return (
-      <div className="p-8 text-center text-xs text-[var(--fg-muted)]">
+      <div className="pt-16 p-8 text-center text-sm text-[var(--muted)]">
         Collection not found.
       </div>
     );
@@ -68,49 +64,49 @@ function CollectionDetailContent() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      {/* Detail Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
+    <div className="pt-12 pb-16 px-6 sm:px-10 max-w-7xl mx-auto space-y-8">
+      {/* Detail Header: generous 48px top spacing, serif title, action pill button */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 pb-4 border-b border-[var(--line)]">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--fg)]">
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]">
               {collection.name}
             </h1>
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[var(--bg-subtle)] text-[var(--fg-subtle)] border border-[var(--border)]">
-              ID: {collection.id}
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono-numbers bg-[var(--surface-2)] text-[var(--muted)] border border-[var(--line)]">
+              {collection.id}
             </span>
           </div>
-          <p className="text-xs text-[var(--fg-muted)] mt-1 max-w-2xl">
+          <p className="text-sm text-[var(--muted)] mt-1.5 max-w-2xl leading-relaxed">
             {collection.description}
           </p>
         </div>
 
-        {/* Persistent "Open chat" signature button */}
-        <div className="flex items-center gap-3">
+        {/* Signature pill button to Grounded Chat */}
+        <div className="flex items-center gap-3 shrink-0">
           <button
             type="button"
             onClick={() => router.push(`/collections/${collection.id}/chat`)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--ink)] hover:opacity-90 text-[var(--surface)] text-sm font-medium shadow-sm transition-all cursor-pointer"
           >
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-4 h-4 text-[var(--accent)]" />
             <span>Open Grounded Chat</span>
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-[var(--border)] text-xs font-medium">
+      <div className="flex items-center gap-2 border-b border-[var(--line)] text-sm">
         <button
           type="button"
           onClick={() => setActiveTab("documents")}
           className={cn(
-            "flex items-center gap-2 px-4 py-2 border-b-2 transition-colors cursor-pointer",
+            "flex items-center gap-2 px-4 py-2.5 border-b-2 transition-colors cursor-pointer text-sm",
             activeTab === "documents"
-              ? "border-[var(--accent)] text-[var(--accent)] font-semibold"
-              : "border-transparent text-[var(--fg-muted)] hover:text-[var(--fg)]"
+              ? "border-[var(--accent)] text-[var(--ink)] font-medium"
+              : "border-transparent text-[var(--muted)] hover:text-[var(--ink)]"
           )}
         >
-          <FileText className="w-3.5 h-3.5" />
+          <FileText className="w-4 h-4" />
           <span>Documents ({collection.documents.length})</span>
         </button>
 
@@ -118,13 +114,13 @@ function CollectionDetailContent() {
           type="button"
           onClick={() => setActiveTab("indexes")}
           className={cn(
-            "flex items-center gap-2 px-4 py-2 border-b-2 transition-colors cursor-pointer",
+            "flex items-center gap-2 px-4 py-2.5 border-b-2 transition-colors cursor-pointer text-sm",
             activeTab === "indexes"
-              ? "border-[var(--accent)] text-[var(--accent)] font-semibold"
-              : "border-transparent text-[var(--fg-muted)] hover:text-[var(--fg)]"
+              ? "border-[var(--accent)] text-[var(--ink)] font-medium"
+              : "border-transparent text-[var(--muted)] hover:text-[var(--ink)]"
           )}
         >
-          <Database className="w-3.5 h-3.5" />
+          <Database className="w-4 h-4" />
           <span>Indexes ({collection.indexes.length})</span>
         </button>
 
@@ -132,13 +128,13 @@ function CollectionDetailContent() {
           type="button"
           onClick={() => setActiveTab("settings")}
           className={cn(
-            "flex items-center gap-2 px-4 py-2 border-b-2 transition-colors cursor-pointer",
+            "flex items-center gap-2 px-4 py-2.5 border-b-2 transition-colors cursor-pointer text-sm",
             activeTab === "settings"
-              ? "border-[var(--accent)] text-[var(--accent)] font-semibold"
-              : "border-transparent text-[var(--fg-muted)] hover:text-[var(--fg)]"
+              ? "border-[var(--accent)] text-[var(--ink)] font-medium"
+              : "border-transparent text-[var(--muted)] hover:text-[var(--ink)]"
           )}
         >
-          <SettingsIcon className="w-3.5 h-3.5" />
+          <SettingsIcon className="w-4 h-4" />
           <span>Settings</span>
         </button>
       </div>
@@ -155,10 +151,10 @@ function CollectionDetailContent() {
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
             className={cn(
-              "relative flex flex-col items-center justify-center p-6 rounded-xl border border-dashed transition-all",
+              "relative flex flex-col items-center justify-center p-8 rounded-[14px] border border-dashed transition-all",
               isDragging
                 ? "border-[var(--accent)] bg-[var(--accent-subtle)]"
-                : "border-[var(--border-strong)] bg-[var(--bg-subtle)]/40 hover:bg-[var(--bg-subtle)]"
+                : "border-[var(--line-strong)] bg-[var(--surface-2)]/50 hover:bg-[var(--surface-2)]"
             )}
           >
             <input
@@ -169,59 +165,59 @@ function CollectionDetailContent() {
               className="absolute inset-0 opacity-0 cursor-pointer"
             />
             <UploadCloud className="w-8 h-8 text-[var(--accent)] mb-2" />
-            <div className="text-xs font-semibold text-[var(--fg)]">
+            <div className="text-sm font-medium text-[var(--ink)]">
               Drop documents here to ingest, or <span className="text-[var(--accent)] underline">browse files</span>
             </div>
-            <p className="text-[11px] text-[var(--fg-subtle)] mt-1">
-              Supports PDF, DOCX, Markdown, and Plain Text. Ingestion parses sections, chunks, and computes pgvector embeddings asynchronously.
+            <p className="text-xs text-[var(--muted)] mt-1 text-center max-w-md">
+              Supports PDF, DOCX, Markdown, and Plain Text. Ingestion parses sections, chunks, and computes vector embeddings asynchronously.
             </p>
           </div>
 
-          {/* Documents Table */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] overflow-hidden">
+          {/* Documents Table: borderless rows, hairline separators, 44px rows, hover tint, no outer shadow */}
+          <div className="rounded-[14px] border border-[var(--line)] bg-[var(--surface)] overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[var(--bg-subtle)] border-b border-[var(--border)] text-[var(--fg-subtle)] font-medium">
-                  <tr>
-                    <th className="py-2.5 px-4 font-semibold">Document</th>
-                    <th className="py-2.5 px-4 font-semibold">Type</th>
-                    <th className="py-2.5 px-4 font-semibold text-right">Size</th>
-                    <th className="py-2.5 px-4 font-semibold text-right">Pages</th>
-                    <th className="py-2.5 px-4 font-semibold text-right">Chunks</th>
-                    <th className="py-2.5 px-4 font-semibold">Status</th>
-                    <th className="py-2.5 px-4 font-semibold text-right">Added</th>
+              <table className="w-full text-left text-sm">
+                <thead className="bg-[var(--surface-2)] border-b border-[var(--line)] text-xs text-[var(--muted)] font-medium">
+                  <tr className="h-10">
+                    <th className="py-2.5 px-4 font-normal">Document</th>
+                    <th className="py-2.5 px-4 font-normal">Type</th>
+                    <th className="py-2.5 px-4 font-normal text-right">Size</th>
+                    <th className="py-2.5 px-4 font-normal text-right">Pages</th>
+                    <th className="py-2.5 px-4 font-normal text-right">Chunks</th>
+                    <th className="py-2.5 px-4 font-normal">Status</th>
+                    <th className="py-2.5 px-4 font-normal text-right">Added</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--border)]">
+                <tbody className="divide-y divide-[var(--line)]">
                   {collection.documents.map((doc) => (
                     <tr
                       key={doc.id}
                       className={cn(
-                        "hover:bg-[var(--bg-subtle)]/60 transition-colors",
-                        doc.status === "failed" && "bg-[var(--negative-subtle)]/20"
+                        "h-11 hover:bg-[var(--surface-2)]/60 transition-colors",
+                        doc.status === "failed" && "bg-[var(--negative-subtle)]"
                       )}
                     >
-                      <td className="py-3 px-4 font-medium text-[var(--fg)]">
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-3.5 h-3.5 text-[var(--fg-subtle)] shrink-0" />
+                      <td className="py-2.5 px-4 font-medium text-[var(--ink)]">
+                        <div className="flex items-center gap-2.5">
+                          <FileText className="w-4 h-4 text-[var(--subtle)] shrink-0" />
                           <span className="truncate max-w-xs">{doc.name}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4">
-                        <span className="px-1.5 py-0.5 rounded font-mono text-[10px] uppercase font-semibold bg-[var(--bg-subtle)] text-[var(--fg-muted)] border border-[var(--border)]">
+                      <td className="py-2.5 px-4">
+                        <span className="px-2 py-0.5 rounded text-xs font-mono-numbers bg-[var(--surface-2)] text-[var(--muted)] border border-[var(--line)]">
                           {doc.type}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-[var(--fg-muted)] tabular-nums">
+                      <td className="py-2.5 px-4 text-right font-mono-numbers text-xs text-[var(--muted)] tabular-nums">
                         {(doc.sizeBytes / 1024).toFixed(0)} KB
                       </td>
-                      <td className="py-3 px-4 text-right font-mono text-[var(--fg-muted)] tabular-nums">
+                      <td className="py-2.5 px-4 text-right font-mono-numbers text-xs text-[var(--muted)] tabular-nums">
                         {doc.pages}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono font-medium text-[var(--fg)] tabular-nums">
+                      <td className="py-2.5 px-4 text-right font-mono-numbers font-medium text-[var(--ink)] tabular-nums">
                         {doc.chunksCount > 0 ? doc.chunksCount.toLocaleString() : "—"}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-2.5 px-4">
                         <StatusPill
                           status={doc.status}
                           progressPercent={doc.progressPercent}
@@ -232,7 +228,7 @@ function CollectionDetailContent() {
                           }
                         />
                       </td>
-                      <td className="py-3 px-4 text-right text-[var(--fg-subtle)] tabular-nums">
+                      <td className="py-2.5 px-4 text-right text-xs text-[var(--muted)] tabular-nums">
                         {formatRelativeTime(doc.addedAt)}
                       </td>
                     </tr>
@@ -246,14 +242,14 @@ function CollectionDetailContent() {
 
       {/* Tab: Indexes */}
       {activeTab === "indexes" && (
-        <div className="space-y-4">
-          <div className="p-3.5 rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-subtle)] flex items-start gap-3 text-xs">
+        <div className="space-y-6">
+          <div className="p-4 rounded-[14px] border border-[var(--line)] bg-[var(--surface-2)] flex items-start gap-3 text-xs">
             <Info className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <span className="font-semibold text-[var(--fg)]">
-                Index Immutability Architecture
+              <span className="font-medium text-[var(--ink)]">
+                Index immutability architecture
               </span>
-              <p className="text-[var(--fg-muted)] leading-relaxed">
+              <p className="text-[var(--muted)] leading-relaxed">
                 Chunk sizes, overlaps, and embedding models determine the vector space. Any change to chunking or embeddings requires a separate index to preserve evaluation comparability.
               </p>
             </div>
@@ -263,52 +259,52 @@ function CollectionDetailContent() {
             {collection.indexes.map((idx) => (
               <div
                 key={idx.id}
-                className="p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-3"
+                className="p-5 rounded-[14px] border border-[var(--line)] bg-[var(--surface)] space-y-4"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Database className="w-4 h-4 text-[var(--accent)]" />
-                    <span className="font-semibold text-xs text-[var(--fg)]">
+                    <span className="font-medium text-sm text-[var(--ink)]">
                       {idx.name}
                     </span>
                   </div>
                   {idx.isDefault && (
-                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[var(--positive-subtle)] text-[var(--positive)] border border-[var(--positive)]/30">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--positive-subtle)] text-[var(--positive)] border border-[var(--positive)]/30">
                       Active
                     </span>
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div className="p-2 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
-                    <span className="text-[10px] text-[var(--fg-subtle)] block">
-                      Embedding Model
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono-numbers">
+                  <div className="p-2.5 rounded-[10px] bg-[var(--surface-2)] border border-[var(--line)]">
+                    <span className="text-[11px] text-[var(--muted)] block font-sans">
+                      Embedding model
                     </span>
-                    <span className="text-[var(--fg)] font-medium truncate block">
+                    <span className="text-[var(--ink)] font-medium truncate block mt-0.5">
                       {idx.embeddingModel}
                     </span>
                   </div>
-                  <div className="p-2 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
-                    <span className="text-[10px] text-[var(--fg-subtle)] block">
-                      Vector Dimension
+                  <div className="p-2.5 rounded-[10px] bg-[var(--surface-2)] border border-[var(--line)]">
+                    <span className="text-[11px] text-[var(--muted)] block font-sans">
+                      Vector dimension
                     </span>
-                    <span className="text-[var(--fg)] font-medium block">
+                    <span className="text-[var(--ink)] font-medium block mt-0.5">
                       {idx.dimension} dims
                     </span>
                   </div>
-                  <div className="p-2 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
-                    <span className="text-[10px] text-[var(--fg-subtle)] block">
-                      Chunk Size / Overlap
+                  <div className="p-2.5 rounded-[10px] bg-[var(--surface-2)] border border-[var(--line)]">
+                    <span className="text-[11px] text-[var(--muted)] block font-sans">
+                      Chunk size / overlap
                     </span>
-                    <span className="text-[var(--fg)] font-medium block">
+                    <span className="text-[var(--ink)] font-medium block mt-0.5">
                       {idx.chunkSize} / {idx.chunkOverlap} tokens
                     </span>
                   </div>
-                  <div className="p-2 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
-                    <span className="text-[10px] text-[var(--fg-subtle)] block">
-                      Indexed Chunks
+                  <div className="p-2.5 rounded-[10px] bg-[var(--surface-2)] border border-[var(--line)]">
+                    <span className="text-[11px] text-[var(--muted)] block font-sans">
+                      Indexed chunks
                     </span>
-                    <span className="text-[var(--fg)] font-medium block tabular-nums">
+                    <span className="text-[var(--ink)] font-medium block tabular-nums mt-0.5">
                       {idx.chunkCount.toLocaleString()}
                     </span>
                   </div>
@@ -322,41 +318,41 @@ function CollectionDetailContent() {
       {/* Tab: Settings */}
       {activeTab === "settings" && (
         <div className="max-w-xl space-y-6">
-          <div className="p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] space-y-4 text-xs">
-            <h3 className="font-semibold text-sm text-[var(--fg)]">
-              Collection Properties
+          <div className="p-5 rounded-[14px] border border-[var(--line)] bg-[var(--surface)] space-y-4 text-xs">
+            <h3 className="font-display text-lg text-[var(--ink)]">
+              Collection properties
             </h3>
             <div>
-              <label className="block text-[var(--fg-muted)] mb-1">Name</label>
+              <label className="block text-xs font-medium text-[var(--ink)] mb-1.5">Name</label>
               <input
                 type="text"
                 defaultValue={collection.name}
-                className="w-full px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--fg)]"
+                className="w-full px-3.5 py-2 rounded-[10px] border border-[var(--line)] bg-[var(--bg)] text-xs text-[var(--ink)] outline-none focus:border-[var(--accent)]"
               />
             </div>
             <div>
-              <label className="block text-[var(--fg-muted)] mb-1">Description</label>
+              <label className="block text-xs font-medium text-[var(--ink)] mb-1.5">Description</label>
               <textarea
                 rows={3}
                 defaultValue={collection.description}
-                className="w-full px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--fg)] resize-none"
+                className="w-full px-3.5 py-2 rounded-[10px] border border-[var(--line)] bg-[var(--bg)] text-xs text-[var(--ink)] resize-none outline-none focus:border-[var(--accent)]"
               />
             </div>
           </div>
 
-          <div className="p-4 rounded-xl border border-[var(--negative)]/30 bg-[var(--negative-subtle)]/10 space-y-3 text-xs">
-            <h3 className="font-semibold text-sm text-[var(--negative)]">
-              Danger Zone
+          <div className="p-5 rounded-[14px] border border-[var(--negative)]/30 bg-[var(--negative-subtle)] space-y-3 text-xs">
+            <h3 className="font-display text-lg text-[var(--negative)]">
+              Danger zone
             </h3>
-            <p className="text-[var(--fg-muted)] leading-relaxed">
-              Deleting this collection will permanently purge {collection.documents.length} documents and {collection.chunksCount.toLocaleString()} vector chunks from pgvector.
+            <p className="text-[var(--muted)] leading-relaxed">
+              Deleting this collection will permanently purge {collection.documents.length} documents and {collection.chunksCount.toLocaleString()} vector chunks from the database.
             </p>
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(true)}
-              className="px-3.5 py-1.5 rounded-lg bg-[var(--negative)] hover:bg-[var(--negative)]/90 text-white font-medium cursor-pointer"
+              className="px-4 py-2 rounded-full bg-[var(--negative)] hover:opacity-90 text-white font-medium cursor-pointer transition-opacity"
             >
-              Delete Collection
+              Delete collection
             </button>
           </div>
         </div>
@@ -364,53 +360,47 @@ function CollectionDetailContent() {
 
       {/* Failed Document Drawer (Sheet) */}
       {selectedFailedDoc && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-150">
           <div
             className="fixed inset-0"
             onClick={() => setSelectedFailedDoc(null)}
           />
 
-          <div className="relative w-full max-w-md bg-[var(--bg-elevated)] border-l border-[var(--border-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
-            <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
+          <div className="relative w-full max-w-md bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
+            <div className="flex items-center justify-between p-4 border-b border-[var(--line)]">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-[var(--negative)]" />
-                <span className="font-semibold text-sm text-[var(--fg)]">
-                  Ingestion Failure Details
+                <span className="font-medium text-sm text-[var(--ink)]">
+                  Ingestion failure details
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedFailedDoc(null)}
-                className="p-1 rounded text-[var(--fg-subtle)] hover:text-[var(--fg)] cursor-pointer"
+                className="p-1 rounded text-[var(--subtle)] hover:text-[var(--ink)] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 flex-1 overflow-y-auto space-y-4">
+            <div className="p-5 flex-1 overflow-y-auto space-y-4">
               <div>
-                <span className="text-[10px] text-[var(--fg-subtle)] uppercase tracking-wider font-semibold">
-                  Document
-                </span>
-                <p className="font-mono text-xs text-[var(--fg)] mt-0.5">
+                <span className="text-xs text-[var(--muted)]">Document</span>
+                <p className="font-mono-numbers text-xs text-[var(--ink)] mt-0.5">
                   {selectedFailedDoc.name}
                 </p>
               </div>
 
               <div>
-                <span className="text-[10px] text-[var(--fg-subtle)] uppercase tracking-wider font-semibold">
-                  Error Code
-                </span>
-                <p className="font-mono text-xs text-[var(--negative)] font-medium mt-0.5">
+                <span className="text-xs text-[var(--muted)]">Error code</span>
+                <p className="font-mono-numbers text-xs text-[var(--negative)] font-medium mt-0.5">
                   ERR_PDF_CORRUPT_STREAM
                 </p>
               </div>
 
               <div>
-                <span className="text-[10px] text-[var(--fg-subtle)] uppercase tracking-wider font-semibold">
-                  Stack Trace & Diagnostics
-                </span>
-                <pre className="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-[11px] font-mono text-[var(--negative)] whitespace-pre-wrap leading-relaxed mt-1 overflow-x-auto">
+                <span className="text-xs text-[var(--muted)]">Stack trace & diagnostics</span>
+                <pre className="p-3 rounded-[10px] bg-[var(--surface-2)] border border-[var(--line)] text-[11px] font-mono-numbers text-[var(--negative)] whitespace-pre-wrap leading-relaxed mt-1 overflow-x-auto">
                   {selectedFailedDoc.errorMessage || "Unknown parser exception."}
                   {"\n"}at PdfParser.extractStreams (parser/pdf.py:142)
                   {"\n"}at IngestionWorker.process_chunks (worker/ingest.py:88)
@@ -418,11 +408,11 @@ function CollectionDetailContent() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-subtle)] flex items-center justify-end gap-3">
+            <div className="p-4 border-t border-[var(--line)] bg-[var(--surface-2)] flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setSelectedFailedDoc(null)}
-                className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] text-[var(--fg)] font-medium cursor-pointer"
+                className="px-4 py-2 rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] font-medium cursor-pointer"
               >
                 Close
               </button>
@@ -432,10 +422,10 @@ function CollectionDetailContent() {
                   retryDocument(collection.id, selectedFailedDoc.id);
                   setSelectedFailedDoc(null);
                 }}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--ink)] text-[var(--surface)] hover:opacity-90 font-medium cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Retry Ingestion</span>
+                <span>Retry ingestion</span>
               </button>
             </div>
           </div>
@@ -444,32 +434,32 @@ function CollectionDetailContent() {
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div
             className="fixed inset-0"
             onClick={() => setDeleteConfirmOpen(false)}
           />
-          <div className="relative w-full max-w-sm rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-strong)] p-5 z-10 text-xs space-y-4">
-            <h3 className="text-sm font-bold text-[var(--fg)]">
-              Confirm Collection Deletion
+          <div className="relative w-full max-w-sm rounded-[20px] bg-[var(--surface)] border border-[var(--line-strong)] p-6 z-10 text-xs space-y-4 shadow-xl">
+            <h3 className="font-display text-lg text-[var(--ink)]">
+              Confirm collection deletion
             </h3>
-            <p className="text-[var(--fg-muted)] leading-relaxed">
-              Are you sure you want to delete <strong className="text-[var(--fg)]">{collection.name}</strong>? This cascades and removes {collection.documents.length} documents and {collection.chunksCount.toLocaleString()} vector chunks.
+            <p className="text-xs text-[var(--muted)] leading-relaxed">
+              Are you sure you want to delete <strong className="text-[var(--ink)]">{collection.name}</strong>? This cascades and removes {collection.documents.length} documents and {collection.chunksCount.toLocaleString()} vector chunks.
             </p>
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 type="button"
                 onClick={() => setDeleteConfirmOpen(false)}
-                className="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] text-[var(--fg)]"
+                className="px-4 py-2 rounded-full border border-[var(--line)] bg-[var(--surface-2)] text-[var(--ink)] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDeleteCollection}
-                className="px-3 py-1.5 rounded-lg bg-[var(--negative)] text-white font-medium"
+                className="px-4 py-2 rounded-full bg-[var(--negative)] text-white font-medium cursor-pointer"
               >
-                Delete Forever
+                Delete forever
               </button>
             </div>
           </div>
@@ -481,7 +471,7 @@ function CollectionDetailContent() {
 
 export default function CollectionDetailPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-xs text-[var(--fg-muted)]">Loading collection...</div>}>
+    <Suspense fallback={<div className="p-8 text-xs text-[var(--muted)]">Loading collection...</div>}>
       <CollectionDetailContent />
     </Suspense>
   );

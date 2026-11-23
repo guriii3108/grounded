@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { useApp } from "../../lib/store/app-context";
 import {
@@ -11,14 +10,35 @@ import {
   Settings,
   ChevronDown,
   ChevronRight,
-  Plus,
   PanelLeftClose,
   PanelLeftOpen,
   FileText,
-  ShieldCheck,
-  Compass,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
+
+/* ── Retriever glyph (placeholder until mascot assets exist) ── */
+function RetrieverGlyph({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      style={{ flexShrink: 0 }}
+    >
+      {/* Dog silhouette placeholder — simple rounded shape */}
+      <ellipse cx="10" cy="12" rx="6" ry="5" fill="var(--accent)" opacity="0.9" />
+      <circle cx="10" cy="7" r="4" fill="var(--accent)" opacity="0.9" />
+      {/* ears */}
+      <ellipse cx="6.5" cy="5" rx="2" ry="3" fill="var(--accent)" opacity="0.75" transform="rotate(-15 6.5 5)" />
+      <ellipse cx="13.5" cy="5" rx="2" ry="3" fill="var(--accent)" opacity="0.75" transform="rotate(15 13.5 5)" />
+      {/* eye */}
+      <circle cx="8.5" cy="6.5" r="0.8" fill="var(--bg)" />
+      <circle cx="11.5" cy="6.5" r="0.8" fill="var(--bg)" />
+    </svg>
+  );
+}
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -56,36 +76,34 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "relative flex flex-col h-screen border-r border-[var(--border)] bg-[var(--bg-subtle)] select-none transition-all duration-200 shrink-0",
+        "relative flex flex-col h-screen border-r border-[var(--line)] bg-[var(--surface-2)] select-none transition-all duration-200 shrink-0",
         sidebarCollapsed ? "w-14" : "w-56"
       )}
     >
-      {/* Brand Header */}
-      <div className="flex items-center justify-between h-13 px-3.5 border-b border-[var(--border)]">
+      {/* ── Brand Header ─────────────────────────────────────────── */}
+      <div className="flex items-center justify-between h-13 px-3 border-b border-[var(--line)]">
         {!sidebarCollapsed ? (
-          <div
+          <button
+            type="button"
             onClick={() => router.push("/collections")}
-            className="flex items-center gap-2 cursor-pointer group"
+            className="flex items-center gap-2 cursor-pointer group min-w-0"
           >
-            <div className="w-6 h-6 rounded-md bg-[var(--accent)] flex items-center justify-center text-white shadow-xs">
-              <span className="font-mono font-bold text-xs">G</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-xs tracking-tight text-[var(--fg)]">
-                Grounded
-              </span>
-              <span className="text-[9px] font-mono text-[var(--fg-subtle)] uppercase tracking-wider">
-                RAG Engine
-              </span>
-            </div>
-          </div>
+            <RetrieverGlyph size={22} />
+            <span
+              className="font-display text-lg leading-none text-[var(--ink)] tracking-tight truncate"
+            >
+              Grounded
+            </span>
+          </button>
         ) : (
-          <div
+          <button
+            type="button"
             onClick={() => router.push("/collections")}
-            className="mx-auto w-6 h-6 rounded-md bg-[var(--accent)] flex items-center justify-center text-white cursor-pointer"
+            className="mx-auto cursor-pointer"
+            title="Grounded"
           >
-            <span className="font-mono font-bold text-xs">G</span>
-          </div>
+            <RetrieverGlyph size={22} />
+          </button>
         )}
 
         <button
@@ -93,7 +111,7 @@ export function Sidebar() {
           onClick={() => setSidebarCollapsed((prev) => !prev)}
           title="Toggle sidebar ([)"
           className={cn(
-            "p-1.5 rounded-md text-[var(--fg-subtle)] hover:text-[var(--fg)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer",
+            "p-1.5 rounded-lg text-[var(--subtle)] hover:text-[var(--ink)] hover:bg-[var(--surface)] transition-colors cursor-pointer shrink-0",
             sidebarCollapsed && "mx-auto"
           )}
         >
@@ -105,8 +123,8 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* Nav List */}
-      <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1">
+      {/* ── Nav ──────────────────────────────────────────────────── */}
+      <div className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -115,31 +133,39 @@ export function Sidebar() {
                 type="button"
                 onClick={() => router.push(item.href)}
                 className={cn(
-                  "w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer text-left",
+                  "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-sm font-medium transition-all cursor-pointer text-left",
                   item.match
-                    ? "bg-[var(--bg-elevated)] text-[var(--fg)] border border-[var(--border)] shadow-xs"
-                    : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-elevated)]/60"
+                    ? "bg-[var(--surface)] text-[var(--ink)] shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
+                    : "text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)]/60"
                 )}
                 title={sidebarCollapsed ? item.label : undefined}
               >
+                {/* Accent dot for active item */}
+                {item.match && !sidebarCollapsed && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
+                )}
                 <Icon
                   className={cn(
                     "w-4 h-4 shrink-0",
-                    item.match ? "text-[var(--accent)]" : "text-[var(--fg-subtle)]"
+                    item.match ? "text-[var(--ink)]" : "text-[var(--subtle)]",
+                    // No dot in collapsed mode — icon serves as indicator
+                    sidebarCollapsed && item.match && "text-[var(--accent)]"
                   )}
                 />
-                {!sidebarCollapsed && <span className="flex-1 truncate">{item.label}</span>}
+                {!sidebarCollapsed && (
+                  <span className="flex-1 truncate">{item.label}</span>
+                )}
               </button>
 
-              {/* Expandable sub-items for Collections */}
+              {/* Sub-items for Collections */}
               {!sidebarCollapsed && item.href === "/collections" && (
-                <div className="mt-1 pl-4 space-y-0.5">
-                  <div className="flex items-center justify-between px-2 py-1 text-[10px] uppercase font-semibold text-[var(--fg-subtle)] tracking-wider">
+                <div className="mt-1 pl-5 space-y-0.5">
+                  <div className="flex items-center justify-between px-2 py-1 text-xs text-[var(--subtle)]">
                     <span>Recent</span>
                     <button
                       type="button"
                       onClick={() => setCollectionsExpanded((p) => !p)}
-                      className="p-0.5 hover:text-[var(--fg)] cursor-pointer"
+                      className="p-0.5 hover:text-[var(--ink)] cursor-pointer transition-colors"
                     >
                       {collectionsExpanded ? (
                         <ChevronDown className="w-3 h-3" />
@@ -156,13 +182,13 @@ export function Sidebar() {
                         type="button"
                         onClick={() => router.push(`/collections/${col.id}`)}
                         className={cn(
-                          "w-full flex items-center gap-2 px-2 py-1 rounded text-[11px] truncate text-left transition-colors cursor-pointer",
+                          "w-full flex items-center gap-2 px-2 py-1.5 rounded-[8px] text-xs truncate text-left transition-colors cursor-pointer",
                           pathname.includes(`/collections/${col.id}`)
                             ? "text-[var(--accent)] font-medium bg-[var(--accent-subtle)]"
-                            : "text-[var(--fg-muted)] hover:text-[var(--fg)]"
+                            : "text-[var(--muted)] hover:text-[var(--ink)] hover:bg-[var(--surface)]/60"
                         )}
                       >
-                        <FileText className="w-3 h-3 shrink-0 text-[var(--fg-subtle)]" />
+                        <FileText className="w-3 h-3 shrink-0 text-[var(--subtle)]" />
                         <span className="truncate">{col.name}</span>
                       </button>
                     ))}
@@ -173,19 +199,14 @@ export function Sidebar() {
         })}
       </div>
 
-      {/* Footer Info */}
+      {/* ── Footer ───────────────────────────────────────────────── */}
       {!sidebarCollapsed && (
-        <div className="p-3 border-t border-[var(--border)] bg-[var(--bg-elevated)]/50">
-          <div className="flex items-center justify-between text-[11px] text-[var(--fg-subtle)]">
-            <span className="flex items-center gap-1.5 font-medium text-[var(--fg)]">
-              <span className="w-2 h-2 rounded-full bg-[var(--positive)] animate-pulse" />
-              Engine Online
-            </span>
-            <span className="font-mono text-[10px]">pgvector</span>
+        <div className="p-3 border-t border-[var(--line)]">
+          <div className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--positive)] shrink-0" />
+            <span className="text-[var(--ink)] font-medium">Engine online</span>
+            <span className="font-mono-numbers text-[11px] ml-auto text-[var(--subtle)]">pgvector</span>
           </div>
-          <p className="text-[10px] text-[var(--fg-subtle)] mt-1 truncate">
-            Every answer grounded.
-          </p>
         </div>
       )}
     </aside>
