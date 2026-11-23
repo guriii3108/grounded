@@ -29,6 +29,15 @@ export function Mascot({ name, pose = "idle", size = 56, className, priority = f
   const reduceMotion = useReducedMotion();
   const src = assetMap[name];
   const [lean, setLean] = useState({ x: 0, y: 0, rotate: 0 });
+  const [pressed, setPressed] = useState(false);
+  const stateMotion = {
+    idle: { y: [-5, 5, -5] },
+    thinking: { y: [-3, 3, -3], rotate: [-3, 3, -3] },
+    fetching: { y: [-5, 5, -5], rotate: [-1, 1, -1] },
+    judge: { y: [-3, 3, -3], rotate: [-1.5, 1.5, -1.5] },
+    celebrate: { y: [0, -14, 0, -9, 0], scale: [1, 1.06, 0.98, 1.04, 1] },
+    error: { x: [0, -3, 3, -2, 2, 0], scale: [1, 0.96, 1] },
+  }[pose];
 
   if (!src) {
     const filename = `${name}-${pose}.webp`;
@@ -41,16 +50,15 @@ export function Mascot({ name, pose = "idle", size = 56, className, priority = f
 
   return (
     <motion.div
-      aria-label={`${name} mascot (${pose})`}
-      role="img"
+      aria-hidden="true"
       className={cn("relative shrink-0", className)}
       style={{ width: size, height: size }}
-      animate={reduceMotion ? { y: 0 } : { y: [-5, 5, -5] }}
-      transition={reduceMotion ? undefined : { duration: 7, ease: "easeInOut", repeat: Infinity, delay }}
+      animate={reduceMotion ? { y: 0 } : stateMotion}
+      transition={reduceMotion ? undefined : { duration: pose === "celebrate" || pose === "error" ? 0.7 : 7, ease: "easeInOut", repeat: pose === "celebrate" || pose === "error" ? 0 : Infinity, delay }}
     >
       <motion.div
         className="relative size-full"
-        animate={reduceMotion ? undefined : lean}
+        animate={reduceMotion ? undefined : { ...lean, scale: pressed ? [0.88, 1.06, 1] : 1 }}
         transition={{ type: "spring", stiffness: 180, damping: 16 }}
         onPointerMove={(event) => {
           const rect = event.currentTarget.getBoundingClientRect();
@@ -59,6 +67,8 @@ export function Mascot({ name, pose = "idle", size = 56, className, priority = f
           setLean({ x: x * 4, y: y * 2, rotate: x * 4 });
         }}
         onPointerLeave={() => setLean({ x: 0, y: 0, rotate: 0 })}
+        onPointerDown={() => setPressed(true)}
+        onPointerUp={() => setPressed(false)}
       >
         <Image src={src} alt="" fill sizes={`${size}px`} priority={priority} className="object-contain" />
       </motion.div>

@@ -176,3 +176,36 @@
   border-color: var(--line-strong);
   transform: translateY(-1px);
 }
+
+/* ─── Marketing Landing ─────────────────────────────────────────────────── */
+.hero-gradient-text {
+  background: linear-gradient(100deg, #f5f3ff 8%, #b9b4ff 42%, #7dd3fc 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to top, black, transparent 95%);
+}
+
+.glass-panel {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(99, 102, 241, 0.16), transparent 32rem),
+    color-mix(in srgb, var(--surface) 78%, transparent);
+  box-shadow: 0 30px 80px -48px rgba(0, 0, 0, 0.85);
+}
+
+html:not(.dark) .hero-gradient-text {
+  background-image: linear-gradient(100deg, #111827 8%, #4f46e5 48%, #0e7490 92%);
+}
+
+html:not(.dark) .glass-panel {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(129, 140, 248, 0.18), transparent 32rem),
+    rgba(255, 255, 255, 0.75);
+}

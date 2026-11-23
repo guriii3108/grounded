@@ -1,69 +1,77 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   ArrowRight,
   Check,
+  CheckCircle2,
+  ChevronRight,
   Copy,
-  Moon,
-  Sun,
-  ShieldCheck,
-  Zap,
-  Terminal,
   Database,
-  GitCompare,
-  Layers,
-  Search,
+  FileSearch,
+  GitCompareArrows,
+  Menu,
+  Moon,
+  SearchCheck,
+  ShieldCheck,
+  Sparkles,
+  Sun,
+  Terminal,
 } from "lucide-react";
-import { useState } from "react";
-import { Mascot } from "../../components/ui/mascot";
 import { useApp } from "../../lib/store/app-context";
 
-const steps = [
+const proofPoints = ["Built for retrieval", "Citations by default", "Benchmarks included"];
+
+const capabilities = [
   {
-    step: "01",
-    title: "Ingest with Immutable Structure",
-    desc: "Parse filings, technical docs, and policies. Grounded splits documents into semantic chunks and binds them to immutable vector indexes for reliable regression testing.",
-    badge: "Vector + Keyword",
-    mascot: "retriever" as const,
+    icon: Database,
+    title: "Know what went in",
+    description: "Versioned collections and inspectable chunks keep every answer tied to the source material you approved.",
+    tint: "bg-violet-500/12 text-violet-300",
   },
   {
-    step: "02",
-    title: "Synthesize with Cited Grounding",
-    desc: "Answers are delivered with bidirectional chunk citations [1]. Every single sentence is grounded against raw passage sources so reviewers can verify claims in milliseconds.",
-    badge: "Hallucination-Proof",
-    mascot: "retriever" as const,
+    icon: SearchCheck,
+    title: "Find the right evidence",
+    description: "Hybrid search blends semantic understanding with exact keyword recall, even in dense technical documents.",
+    tint: "bg-cyan-500/12 text-cyan-300",
   },
   {
-    step: "03",
-    title: "Automated Benchmark Rubrics",
-    desc: "Execute standardized test cases through LLM judges. Measure factual faithfulness, answer relevance, and context recall with precise per-run scoring and cost tracking.",
-    badge: "Rubric Scoring",
-    mascot: "owl" as const,
-  },
-  {
-    step: "04",
-    title: "Side-by-Side A/B Diff",
-    desc: "Compare two pipeline runs head-to-head. Isolate chunking strategy changes, model switches, and temperature tweaks to catch retrieval degradation before shipping to production.",
-    badge: "Regression Diff",
-    mascot: "owl" as const,
+    icon: ShieldCheck,
+    title: "Ship with confidence",
+    description: "Run rubric-based evaluations before a prompt, model, or chunking change reaches your users.",
+    tint: "bg-amber-500/12 text-amber-300",
   },
 ];
 
-const providers = [
-  { name: "OpenAI", tag: "GPT-4o & text-embedding-3" },
-  { name: "Anthropic", tag: "Claude 3.7 Sonnet" },
-  { name: "Ollama", tag: "Local Llama 3.3 & Qwen" },
-  { name: "Groq", tag: "Ultra-low Latency Inference" },
-  { name: "vLLM", tag: "Self-Hosted GPU Cluster" },
-  { name: "PostgreSQL", tag: "pgvector Indexing" },
+const workflow = [
+  { number: "01", title: "Bring your source of truth", text: "Upload files, sync a collection, and see exactly how every document becomes searchable context.", icon: FileSearch },
+  { number: "02", title: "Trace every response", text: "Give your team answers with precise citations that lead straight back to the supporting passage.", icon: SearchCheck },
+  { number: "03", title: "Prove every release", text: "Compare production runs and make evaluation a habit—not an emergency response.", icon: GitCompareArrows },
 ];
+
+function Wordmark() {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-violet-400 via-indigo-500 to-cyan-400 shadow-[0_10px_24px_-8px_rgba(99,102,241,0.8)]">
+        <div className="size-3 rounded-[4px] border-2 border-white/90" />
+      </div>
+      <span className="text-[15px] font-bold tracking-[-0.04em] text-[var(--ink)]">grounded</span>
+    </div>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <span className="text-[11px] font-bold uppercase tracking-[0.17em] text-violet-300">{children}</span>;
+}
 
 export default function MarketingLandingPage() {
   const router = useRouter();
   const { theme, toggleTheme } = useApp();
   const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const dockerCommand = "docker compose up -d";
 
   const copy = async () => {
@@ -73,398 +81,170 @@ export default function MarketingLandingPage() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[var(--bg)] text-[var(--ink)] selection:bg-indigo-500/20">
-      {/* ── Top Navigation Bar ────────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-[var(--line)] bg-[var(--bg)]/80 px-6 backdrop-blur-md sm:px-10">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-xs">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
+    <div className="min-h-screen overflow-x-hidden bg-[var(--bg)] text-[var(--ink)] selection:bg-violet-400/30">
+      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between rounded-2xl border border-white/8 bg-[color:color-mix(in_srgb,var(--bg)_84%,transparent)] px-3 shadow-[0_12px_36px_-24px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:px-4">
+          <Link href="/" aria-label="Grounded home"><Wordmark /></Link>
+
+          <nav className="hidden items-center gap-6 text-xs font-medium text-[var(--muted)] md:flex">
+            <a className="transition hover:text-[var(--ink)]" href="#how-it-works">How it works</a>
+            <a className="transition hover:text-[var(--ink)]" href="#platform">Platform</a>
+            <a className="transition hover:text-[var(--ink)]" href="#self-host">Self-host</a>
+          </nav>
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <button type="button" onClick={toggleTheme} aria-label="Toggle theme" className="grid size-8 place-items-center rounded-lg text-[var(--muted)] transition hover:bg-[var(--surface-2)] hover:text-[var(--ink)]">
+              {theme === "dark" ? <Sun className="size-4 text-amber-300" /> : <Moon className="size-4" />}
+            </button>
+            <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="Toggle navigation" className="grid size-8 place-items-center rounded-lg text-[var(--muted)] md:hidden">
+              <Menu className="size-4" />
+            </button>
+            <button type="button" onClick={() => router.push("/collections")} className="hidden items-center gap-1.5 rounded-xl bg-[var(--ink)] px-3.5 py-2 text-xs font-semibold text-[var(--bg)] transition hover:scale-[1.02] sm:flex">
+              Open platform <ArrowRight className="size-3.5" />
+            </button>
           </div>
-          <span className="font-bold text-sm tracking-tight text-[var(--ink)]">
-            Grounded
-          </span>
-          <span className="hidden sm:inline-block font-mono-numbers text-[10px] px-1.5 py-0.2 rounded border border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--muted)]">
-            v1.2
-          </span>
         </div>
-
-        <nav className="hidden items-center gap-6 text-xs text-[var(--muted)] md:flex">
-          <a href="#workflow" className="hover:text-[var(--ink)] transition-colors">
-            Workflow
-          </a>
-          <a href="#features" className="hover:text-[var(--ink)] transition-colors">
-            Architecture
-          </a>
-          <a href="#evals" className="hover:text-[var(--ink)] transition-colors">
-            Evaluation Hub
-          </a>
-          <a href="#self-host" className="hover:text-[var(--ink)] transition-colors">
-            Self-Host
-          </a>
-        </nav>
-
-        <div className="flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="rounded-lg p-1.5 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)] transition-colors cursor-pointer"
-          >
-            {theme === "dark" ? <Sun className="w-4 h-4 text-[var(--warning)]" /> : <Moon className="w-4 h-4" />}
-          </button>
-
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] text-xs text-[var(--ink)] font-medium transition-colors cursor-pointer"
-          >
-            <Terminal className="w-3.5 h-3.5 text-[var(--muted)]" />
-            <span>GitHub</span>
-          </a>
-
-          <button
-            type="button"
-            onClick={() => router.push("/collections")}
-            className="flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs transition-colors cursor-pointer"
-          >
-            <span>Open Platform</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+        {menuOpen && (
+          <nav className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-3 text-sm shadow-xl md:hidden">
+            <a href="#how-it-works" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-[var(--muted)] hover:bg-[var(--surface-2)]">How it works</a>
+            <a href="#platform" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-[var(--muted)] hover:bg-[var(--surface-2)]">Platform</a>
+            <a href="#self-host" onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-2 text-[var(--muted)] hover:bg-[var(--surface-2)]">Self-host</a>
+            <button type="button" onClick={() => router.push("/collections")} className="mt-1 rounded-lg bg-[var(--ink)] px-3 py-2 text-left text-sm font-semibold text-[var(--bg)]">Open platform</button>
+          </nav>
+        )}
       </header>
 
       <main>
-        {/* ── Hero Section ────────────────────────────────────────────── */}
-        <section className="relative mx-auto flex flex-col items-center overflow-hidden px-6 pt-16 pb-20 text-center sm:px-10 max-w-6xl">
-          {/* Subtle Ambient Radial Glow */}
-          <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-indigo-500/10 blur-[100px] rounded-full" />
-
-          {/* Micro-badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-medium mb-6 animate-in fade-in">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span>Grounded 1.2 · Provider-Agnostic RAG & Benchmark Suite</span>
+        <section className="relative isolate overflow-hidden px-5 pb-12 pt-32 sm:px-8 sm:pt-36 lg:pb-20">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute left-1/2 top-[-18rem] h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-violet-500/18 blur-[130px]" />
+            <div className="absolute right-[-16rem] top-56 h-80 w-80 rounded-full bg-cyan-400/10 blur-[100px]" />
+            <div className="absolute bottom-0 left-[-13rem] h-72 w-72 rounded-full bg-amber-300/8 blur-[100px]" />
+            <div className="landing-grid absolute inset-x-0 bottom-0 h-[62%] opacity-35" />
           </div>
 
-          <h1 className="max-w-4xl text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--ink)] leading-[1.08]">
-            Every answer grounded.
-            <br />
-            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
-              Every claim verified.
-            </span>
-          </h1>
-
-          <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-[var(--muted)]">
-            A developer platform combining hybrid vector-keyword retrieval with automated rubric benchmarks and side-by-side A/B evaluation. Eliminate hallucinations with verifiable citations.
-          </p>
-
-          {/* Hero CTAs */}
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={() => router.push("/collections")}
-              className="flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-all cursor-pointer"
-            >
-              <span>Launch Grounded Platform</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={copy}
-              className="flex items-center gap-2 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] px-4 py-2.5 text-xs font-mono-numbers text-[var(--ink)] transition-colors cursor-pointer"
-            >
-              <Terminal className="w-3.5 h-3.5 text-[var(--accent-bright)]" />
-              <span>{dockerCommand}</span>
-              {copied ? (
-                <Check className="w-3.5 h-3.5 text-[var(--positive)]" />
-              ) : (
-                <Copy className="w-3.5 h-3.5 text-[var(--subtle)]" />
-              )}
-            </button>
-          </div>
-
-          {/* Interactive Hero Showcase Preview */}
-          <div className="mt-12 w-full max-w-4xl rounded-xl border border-[var(--line-strong)] bg-[var(--surface)] p-2 shadow-2xl relative">
-            <div className="rounded-lg border border-[var(--line)] bg-[var(--bg)] p-4 sm:p-6 text-left">
-              {/* Window Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-[var(--line)] mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                  <span className="ml-2 font-mono-numbers text-[11px] text-[var(--subtle)]">
-                    grounded-chat · SEC-10K-2025 · hybrid(k=5)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 font-mono-numbers text-[10px] text-[var(--positive)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--positive)]" />
-                  <span>98.4% faithfulness</span>
-                </div>
-              </div>
-
-              {/* Chat question & grounded answer */}
-              <div className="space-y-4">
-                <div className="p-3 rounded-lg bg-[var(--surface-2)] border border-[var(--line)] text-xs text-[var(--ink)]">
-                  <span className="font-semibold text-[var(--muted)] text-[10px] block uppercase tracking-wider mb-1">
-                    User Query
-                  </span>
-                  What was Apple&apos;s Services revenue in fiscal 2025, and how did it perform compared to 2024?
-                </div>
-
-                <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--line)] text-xs leading-relaxed text-[var(--ink)] space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-[var(--line)] pb-2">
-                    <span className="font-semibold text-indigo-400 text-[10px] uppercase tracking-wider">
-                      Synthesized Grounded Answer
-                    </span>
-                    <span className="font-mono-numbers text-[10px] text-[var(--subtle)]">
-                      48ms retrieval · 382 tokens
-                    </span>
-                  </div>
-                  <p>
-                    According to Apple&apos;s FY2025 Form 10-K, Services net sales reached{" "}
-                    <strong className="text-[var(--ink)] font-semibold">$96,169 million</strong> in fiscal 2025{" "}
-                    <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-400 font-mono text-[10px] font-bold border border-indigo-500/30">
-                      [1]
-                    </span>
-                    . This represents an increase of{" "}
-                    <strong className="text-[var(--ink)] font-semibold">13%</strong> compared to $85,200 million
-                    recorded in fiscal 2024{" "}
-                    <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-400 font-mono text-[10px] font-bold border border-indigo-500/30">
-                      [1]
-                    </span>
-                    . Growth was driven by cloud storage, advertising, and App Store transactions{" "}
-                    <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-400 font-mono text-[10px] font-bold border border-indigo-500/30">
-                      [2]
-                    </span>
-                    .
-                  </p>
-
-                  {/* Source citations drawer preview */}
-                  <div className="mt-3 p-2.5 rounded-md bg-[var(--surface-2)] border border-[var(--line)] text-[11px] space-y-1">
-                    <div className="flex items-center gap-2 text-indigo-400 font-semibold">
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Verified Citation [1] · Apple_FY2025_10K.pdf (page 34)</span>
-                    </div>
-                    <p className="text-[var(--muted)] text-[10px] italic">
-                      &ldquo;Services net sales were $96,169 million in 2025, an increase of 13% compared to $85,200 million in 2024, driven primarily by growth in advertising, cloud services and the App Store.&rdquo;
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1.5 text-[11px] font-semibold tracking-wide text-violet-200 shadow-sm">
+              <Sparkles className="size-3.5" />
+              <span>RAG you can actually trust</span>
             </div>
-
-            {/* Interactive production mascot trio */}
-            <div className="absolute -bottom-10 -right-5 hidden h-40 w-64 items-end justify-center sm:flex">
-              <Mascot name="mole" size={110} delay={0.5} priority className="-mr-7" />
-              <Mascot name="retriever" size={145} delay={0} priority className="z-10" />
-              <Mascot name="owl" size={110} delay={1} priority className="-ml-7" />
-            </div>
-          </div>
-        </section>
-
-        {/* ── 4-Step Interactive Workflow ──────────────────────────────── */}
-        <section id="workflow" className="px-6 py-20 sm:px-10 border-t border-[var(--line)] bg-[var(--surface-2)]/30">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center max-w-xl mx-auto mb-14">
-              <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
-                End-to-End Pipeline
-              </span>
-              <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
-                From Raw Source Material to Verified Claim
-              </h2>
-              <p className="mt-2 text-xs text-[var(--muted)]">
-                An observable, auditable architecture designed for enterprise engineering teams.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {steps.map((st) => (
-                <div
-                  key={st.step}
-                  className="p-5 rounded-lg border border-[var(--line)] bg-[var(--surface)] hover:border-[var(--line-strong)] transition-all flex flex-col justify-between shadow-xs group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-mono-numbers text-xs font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                        {st.step}
-                      </span>
-                      <span className="text-[11px] font-mono-numbers text-[var(--subtle)]">
-                        {st.badge}
-                      </span>
-                    </div>
-                    <h3 className="font-bold text-base text-[var(--ink)] group-hover:text-indigo-400 transition-colors">
-                      {st.title}
-                    </h3>
-                    <p className="mt-1.5 text-xs text-[var(--muted)] leading-relaxed">
-                      {st.desc}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between">
-                    <span className="text-[11px] font-medium text-[var(--subtle)]">
-                      Automated pipeline stage
-                    </span>
-                    <Mascot name={st.mascot} size={36} pose="idle" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Architecture & Features Grid ────────────────────────────── */}
-        <section id="features" className="px-6 py-20 sm:px-10 border-t border-[var(--line)]">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center max-w-xl mx-auto mb-14">
-              <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
-                Core Capabilities
-              </span>
-              <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
-                Engineered for Rigorous Production Inspection
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                {
-                  icon: Database,
-                  title: "Immutable Vector Indexes",
-                  desc: "Indexes are frozen at creation. Changing chunk sizes or embedding models creates a new index so benchmarks remain mathematically comparable.",
-                },
-                {
-                  icon: Search,
-                  title: "Hybrid Dense + Sparse",
-                  desc: "Combine vector embeddings for semantic depth with BM25 keyword matching for exact acronyms, numbers, and SKU code lookups.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Automated LLM Judges",
-                  desc: "Score runs using Claude 3.7 or GPT-4o against standard RAG rubrics: Faithfulness, Answer Relevance, and Context Recall.",
-                },
-                {
-                  icon: GitCompare,
-                  title: "Side-by-Side A/B Diff",
-                  desc: "Inspect diffs across 100+ questions simultaneously. Pinpoint exactly where recall dropped or latency spiked.",
-                },
-                {
-                  icon: Zap,
-                  title: "Provider-Agnostic Engine",
-                  desc: "Seamlessly route embeddings and generation across OpenAI, Anthropic, Ollama local weights, vLLM, and Groq.",
-                },
-                {
-                  icon: Layers,
-                  title: "Local-First & Private",
-                  desc: "Self-host the complete stack with standard Docker Compose. PostgreSQL and pgvector keep your sensitive documents on your network.",
-                },
-              ].map((f) => (
-                <div
-                  key={f.title}
-                  className="p-5 rounded-lg border border-[var(--line)] bg-[var(--surface)] hover:border-[var(--line-strong)] transition-all shadow-xs"
-                >
-                  <div className="w-8 h-8 rounded-md bg-[var(--surface-2)] text-indigo-400 border border-[var(--line)] flex items-center justify-center mb-3">
-                    <f.icon className="w-4 h-4" />
-                  </div>
-                  <h3 className="font-bold text-sm text-[var(--ink)]">
-                    {f.title}
-                  </h3>
-                  <p className="mt-1.5 text-xs text-[var(--muted)] leading-relaxed">
-                    {f.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Supported Ecosystem Strip ───────────────────────────────── */}
-        <section className="px-6 py-12 border-t border-[var(--line)] bg-[var(--surface-2)]/30">
-          <div className="mx-auto max-w-5xl">
-            <span className="block text-center text-[11px] font-semibold uppercase tracking-wider text-[var(--subtle)] mb-6">
-              Compatible with Any LLM & Embedding Runtime
-            </span>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {providers.map((p) => (
-                <div
-                  key={p.name}
-                  className="p-3 rounded-md border border-[var(--line)] bg-[var(--surface)] text-center shadow-xs"
-                >
-                  <span className="font-bold text-xs text-[var(--ink)] block">
-                    {p.name}
-                  </span>
-                  <span className="text-[10px] text-[var(--muted)] truncate block mt-0.5">
-                    {p.tag}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Self-Host Terminal Section ──────────────────────────────── */}
-        <section id="self-host" className="px-6 py-20 sm:px-10 border-t border-[var(--line)]">
-          <div className="mx-auto max-w-3xl rounded-xl border border-[var(--line-strong)] bg-[var(--surface)] p-6 sm:p-8 shadow-xl text-center space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">
-              One Command Deployment
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
-              Self-Host in Seconds
-            </h2>
-            <p className="text-xs text-[var(--muted)] max-w-md mx-auto">
-              Run Grounded on your own hardware or cloud VPC with Docker. PostgreSQL, pgvector, and full API engine included.
+            <h1 className="mt-6 max-w-4xl text-balance text-[clamp(2.9rem,7vw,6.3rem)] font-bold leading-[0.94] tracking-[-0.065em] text-[var(--ink)]">
+              Make every answer <span className="hero-gradient-text">earn its place.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-pretty text-sm leading-7 text-[var(--muted)] sm:text-base">
+              Grounded gives your AI answers sources, your team a clear audit trail, and every release a benchmark worth believing.
             </p>
-
-            <div className="mt-4 flex items-center justify-between p-3 rounded-lg border border-[var(--line)] bg-[var(--bg)] font-mono-numbers text-xs text-[var(--ink)] max-w-lg mx-auto">
-              <span className="text-indigo-400 select-none mr-2">$</span>
-              <span className="flex-1 text-left">{dockerCommand}</span>
-              <button
-                type="button"
-                onClick={copy}
-                className="flex items-center gap-1 px-2.5 py-1 rounded bg-[var(--surface-2)] hover:bg-[var(--line)] border border-[var(--line)] text-[11px] text-[var(--ink)] transition-colors cursor-pointer"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-[var(--positive)]" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? "Copied" : "Copy"}</span>
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+              <button type="button" onClick={() => router.push("/collections")} className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_30px_-12px_rgba(99,102,241,0.85)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_36px_-12px_rgba(99,102,241,0.95)]">
+                Start grounding answers <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </button>
+              <a href="#how-it-works" className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--line-strong)] bg-[var(--surface)]/70 px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:border-violet-400/45 hover:bg-[var(--surface-2)]">
+                See how it works <ChevronRight className="size-4" />
+              </a>
             </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[11px] text-[var(--muted)]">
+              {proofPoints.map((point) => <span key={point} className="flex items-center gap-1.5"><CheckCircle2 className="size-3.5 text-emerald-400" />{point}</span>)}
+            </div>
+
+            <div className="relative mt-2 h-[230px] w-full max-w-5xl overflow-hidden sm:mt-4 sm:h-[365px]">
+              <div aria-hidden="true" className="absolute inset-x-[13%] bottom-[11%] h-24 rounded-full bg-violet-500/25 blur-[60px]" />
+              <Image src="/mascot/crew-hero-v2.webp" alt="Mochi, Wisp, and Nova, Grounded's mascot crew" width={2560} height={1440} priority sizes="(max-width: 640px) 100vw, (max-width: 1024px) 88vw, 960px" className="absolute left-1/2 top-0 w-full max-w-[960px] -translate-x-1/2 -translate-y-[18%] object-contain" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/65 to-transparent" />
+            </div>
+
+            <div className="relative z-10 -mt-8 grid w-full max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-[var(--line)] bg-[color:color-mix(in_srgb,var(--surface)_82%,transparent)] text-left shadow-2xl backdrop-blur-xl sm:-mt-12">
+              {[["99.2%", "citation coverage"], ["< 2 min", "to your first collection"], ["3 views", "one source of truth"]].map(([value, label], index) => (
+                <div key={label} className={"px-4 py-4 sm:px-7 sm:py-5 " + (index ? "border-l border-[var(--line)]" : "")}>
+                  <strong className="block text-base tracking-[-0.04em] text-[var(--ink)] sm:text-xl">{value}</strong>
+                  <span className="mt-0.5 block text-[10px] leading-tight text-[var(--muted)] sm:text-[11px]">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="platform" className="border-y border-[var(--line)] bg-[var(--surface)]/40 px-5 py-16 sm:px-8 sm:py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <Eyebrow>A calmer way to ship RAG</Eyebrow>
+              <h2 className="mt-4 text-balance text-3xl font-bold tracking-[-0.055em] sm:text-5xl">Everything your answer needs to stand up to scrutiny.</h2>
+              <p className="mt-4 text-sm leading-7 text-[var(--muted)] sm:text-base">The context, the claim, and the evaluation live in one thoughtfully connected workspace.</p>
+            </div>
+            <div className="mt-12 grid gap-4 md:grid-cols-3">
+              {capabilities.map(({ icon: Icon, title, description, tint }) => (
+                <article key={title} className="group rounded-3xl border border-[var(--line)] bg-[var(--bg)]/70 p-6 shadow-[0_16px_40px_-28px_rgba(0,0,0,0.8)] transition duration-300 hover:-translate-y-1 hover:border-violet-400/35">
+                  <div className={"grid size-11 place-items-center rounded-2xl " + tint}><Icon className="size-5" /></div>
+                  <h3 className="mt-8 text-xl font-semibold tracking-[-0.035em] text-[var(--ink)]">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{description}</p>
+                  <div className="mt-7 h-px bg-gradient-to-r from-violet-400/45 to-transparent opacity-0 transition group-hover:opacity-100" />
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="px-5 py-16 sm:px-8 sm:py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+            <div>
+              <Eyebrow>Designed for the whole loop</Eyebrow>
+              <h2 className="mt-4 text-balance text-3xl font-bold tracking-[-0.055em] sm:text-5xl">Less guesswork. More proof.</h2>
+              <p className="mt-5 max-w-md text-sm leading-7 text-[var(--muted)] sm:text-base">Grounded connects preparation, retrieval, and evaluation in a flow that feels obvious to use and rigorous under the hood.</p>
+              <button type="button" onClick={() => router.push("/collections")} className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-violet-300 transition hover:text-violet-200">Explore the workspace <ArrowRight className="size-4" /></button>
+            </div>
+            <div className="space-y-3">
+              {workflow.map(({ number, title, text, icon: Icon }) => (
+                <article key={number} className="group flex gap-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)]/45 p-4 transition hover:border-violet-400/35 hover:bg-[var(--surface)] sm:gap-6 sm:p-6">
+                  <span className="font-mono-numbers text-xs font-bold text-violet-300/85">{number}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-3"><h3 className="text-base font-semibold tracking-[-0.025em]">{title}</h3><Icon className="size-5 shrink-0 text-[var(--subtle)] transition group-hover:text-violet-300" /></div>
+                    <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-5 pb-16 sm:px-8 sm:pb-24">
+          <div className="glass-panel mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-violet-400/18 p-5 sm:p-8 lg:p-10">
+            <div className="grid items-center gap-9 lg:grid-cols-[0.85fr_1.15fr]">
+              <div>
+                <Eyebrow>A product view, not a black box</Eyebrow>
+                <h2 className="mt-4 text-balance text-3xl font-bold tracking-[-0.055em] sm:text-4xl">See the evidence alongside the answer.</h2>
+                <p className="mt-4 max-w-md text-sm leading-7 text-[var(--muted)]">A purpose-built workspace keeps the retrieval trace close enough to inspect before it becomes a production decision.</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#0a0b13] p-3 shadow-2xl">
+                <div className="rounded-xl border border-white/8 bg-[#11131d] p-4 sm:p-5">
+                  <div className="flex items-center justify-between border-b border-white/8 pb-3 text-[10px] font-medium text-zinc-400"><span className="flex items-center gap-2"><span className="size-2 rounded-full bg-emerald-400" />collection / acme-handbook</span><span>faithfulness 98.4%</span></div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-[1.35fr_0.65fr]">
+                    <div className="rounded-lg border border-white/8 bg-white/[0.03] p-3"><span className="text-[10px] font-semibold uppercase tracking-widest text-violet-300">Grounded answer</span><p className="mt-2 text-xs leading-5 text-zinc-200">Employees can carry forward up to <strong>five vacation days</strong> into the next calendar year <span className="rounded bg-violet-400/15 px-1 text-violet-200">[1]</span>.</p><div className="mt-3 h-1.5 w-4/5 rounded-full bg-white/10"><div className="h-full w-[84%] rounded-full bg-gradient-to-r from-violet-400 to-cyan-300" /></div></div>
+                    <div className="rounded-lg border border-violet-400/20 bg-violet-400/[0.07] p-3"><span className="text-[10px] font-semibold uppercase tracking-widest text-violet-200">Evidence [1]</span><p className="mt-2 text-[10px] leading-4 text-zinc-400">handbook.pdf · p. 19</p><p className="mt-2 text-[10px] leading-4 text-zinc-300">“Unused days may be carried forward, up to a maximum of five.”</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="self-host" className="border-t border-[var(--line)] bg-[var(--surface)]/35 px-5 py-16 sm:px-8 sm:py-24">
+          <div className="mx-auto max-w-3xl text-center">
+            <Eyebrow>Your stack, your data</Eyebrow>
+            <h2 className="mt-4 text-balance text-3xl font-bold tracking-[-0.055em] sm:text-5xl">Run it where your work lives.</h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base">Self-host Grounded with your own models, data, and infrastructure. No trade-off between craft and control.</p>
+            <div className="mx-auto mt-8 flex max-w-md items-center gap-3 rounded-2xl border border-[var(--line-strong)] bg-[var(--bg)] p-2 pl-4 text-left shadow-xl">
+              <Terminal className="size-4 shrink-0 text-violet-300" /><code className="min-w-0 flex-1 truncate text-xs text-zinc-300">{dockerCommand}</code>
+              <button type="button" onClick={copy} className="grid size-9 shrink-0 place-items-center rounded-xl bg-[var(--surface-2)] text-[var(--ink)] transition hover:bg-violet-500 hover:text-white" aria-label="Copy Docker command">{copied ? <Check className="size-4 text-emerald-300" /> : <Copy className="size-4" />}</button>
+            </div>
+            <button type="button" onClick={() => router.push("/collections")} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-violet-300 hover:text-violet-200">Open the platform <ArrowRight className="size-4" /></button>
           </div>
         </section>
       </main>
 
-      {/* ── Footer ─────────────────────────────────────────────────── */}
-      <footer className="border-t border-[var(--line)] px-6 py-8 text-center text-xs text-[var(--muted)]">
-        <div className="flex flex-col sm:flex-row items-center justify-between max-w-5xl mx-auto gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-xs text-[var(--ink)]">Grounded</span>
-            <span>—</span>
-            <span>Every answer grounded, every claim measured.</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <Link href="/collections" className="hover:text-[var(--ink)]">
-              Collections
-            </Link>
-            <Link href="/evals" className="hover:text-[var(--ink)]">
-              Evaluations
-            </Link>
-            <Link href="/compare" className="hover:text-[var(--ink)]">
-              Compare
-            </Link>
-            <Link href="/settings" className="hover:text-[var(--ink)]">
-              Settings
-            </Link>
-          </div>
+      <footer className="px-5 py-8 sm:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-xs text-[var(--muted)] sm:flex-row">
+          <Wordmark />
+          <span>Every answer grounded. Every change measured.</span>
+          <div className="flex gap-4"><Link href="/collections" className="hover:text-[var(--ink)]">Collections</Link><Link href="/evals" className="hover:text-[var(--ink)]">Evaluations</Link><Link href="/compare" className="hover:text-[var(--ink)]">Compare</Link></div>
         </div>
       </footer>
     </div>
