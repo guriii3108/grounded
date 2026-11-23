@@ -61,7 +61,7 @@ function RunDetailContent() {
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
               {run.name}
             </h1>
             <StatusPill status={run.status} progressPercent={run.progressPercent} />
@@ -80,9 +80,9 @@ function RunDetailContent() {
           <button
             type="button"
             onClick={() => router.push(`/compare?a=${run.id}`)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--ink)] text-[var(--surface)] hover:opacity-90 text-sm font-medium shadow-sm transition-all cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
           >
-            <GitCompare className="w-4 h-4 text-[var(--accent)]" />
+            <GitCompare className="w-4 h-4 text-white" />
             <span>Compare with…</span>
           </button>
         </div>
@@ -91,7 +91,7 @@ function RunDetailContent() {
       {/* Mascot Status Banners */}
       {run.status === "running" && (
         <div className="p-4 rounded-[14px] border border-[var(--accent)]/30 bg-[var(--accent-subtle)] flex items-center gap-4">
-          <Mascot name="owl" pose="judging" size={40} />
+          <Mascot name="owl" pose="judge" size={64} />
           <div>
             <h3 className="font-medium text-sm text-[var(--ink)]">Evaluation benchmark in progress</h3>
             <p className="text-xs text-[var(--muted)] mt-0.5">
@@ -103,7 +103,7 @@ function RunDetailContent() {
 
       {run.status === "completed" && (
         <div className="p-4 rounded-[14px] border border-[var(--positive)]/30 bg-[var(--positive-subtle)] flex items-center gap-4">
-          <Mascot name="owl" pose="celebrating" size={40} />
+          <Mascot name="retriever" pose="celebrate" size={64} />
           <div>
             <h3 className="font-medium text-sm text-[var(--ink)]">Evaluation completed successfully</h3>
             <p className="text-xs text-[var(--muted)] mt-0.5">
@@ -314,8 +314,8 @@ function RunDetailContent() {
 
           <div className="relative w-full max-w-2xl bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
             <div className="flex items-center justify-between p-5 border-b border-[var(--line)]">
-              <span className="font-display text-lg text-[var(--ink)]">
-                Question benchmark drill-in
+              <span className="font-bold text-sm text-[var(--ink)]">
+                Question Benchmark Drill-in
               </span>
               <button
                 type="button"

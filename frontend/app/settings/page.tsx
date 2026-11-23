@@ -96,8 +96,8 @@ export default function SettingsPage() {
     <div className="pt-12 pb-16 px-6 sm:px-10 max-w-5xl mx-auto space-y-8">
       {/* Header: generous 48px top spacing, serif title */}
       <div className="pb-4 border-b border-[var(--line)]">
-        <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]">
-          Settings: providers & models
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
+          Settings: Providers & Models
         </h1>
         <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
           Configure API credentials, manage self-hosted endpoints (Ollama/vLLM), and bind global model roles.
@@ -312,8 +312,8 @@ export default function SettingsPage() {
 
           <div className="relative w-full max-w-md bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
             <div className="flex items-center justify-between p-5 border-b border-[var(--line)]">
-              <span className="font-display text-lg text-[var(--ink)]">
-                Connect new provider
+              <span className="font-bold text-sm text-[var(--ink)]">
+                Connect New Provider
               </span>
               <button
                 type="button"

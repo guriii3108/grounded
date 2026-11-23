@@ -521,8 +521,8 @@ function GroundedChatContent() {
           ))}
           {isStreaming && (
             <div className="flex items-center gap-2.5 px-2 py-1 text-xs text-[var(--muted)]">
-              <Mascot name="retriever" pose="thinking" size={24} />
-              <span className="italic font-display text-sm text-[var(--ink)]">Retrieving grounding chunks and synthesizing claims…</span>
+              <Mascot name="retriever" pose="thinking" size={64} />
+              <span className="text-xs font-medium text-[var(--muted)] animate-pulse">Retrieving grounding chunks and synthesizing claims…</span>
             </div>
           )}
           <div ref={messagesEndRef} />

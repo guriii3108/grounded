@@ -53,14 +53,14 @@ export function Topbar() {
   return (
     <header className="h-13 px-4 border-b border-[var(--line)] bg-[var(--surface)] flex items-center justify-between gap-4 shrink-0 sticky top-0 z-20">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-[var(--muted)] min-w-0">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-[var(--muted)] min-w-0">
         {breadcrumbs.map((crumb, idx) => (
           <React.Fragment key={crumb.href}>
             {idx > 0 && (
-              <ChevronRight className="w-3.5 h-3.5 text-[var(--subtle)] shrink-0" />
+              <ChevronRight className="w-3 h-3 text-[var(--subtle)] shrink-0" />
             )}
             {idx === breadcrumbs.length - 1 ? (
-              <span className="font-medium text-[var(--ink)] truncate max-w-xs">
+              <span className="font-semibold text-[var(--ink)] truncate max-w-xs">
                 {crumb.label}
               </span>
             ) : (
@@ -77,17 +77,17 @@ export function Topbar() {
       </nav>
 
       {/* ⌘K search trigger */}
-      <div className="flex-1 max-w-md hidden md:flex items-center justify-center">
+      <div className="flex-1 max-w-sm hidden md:flex items-center justify-center">
         <button
           type="button"
           onClick={() => setCommandPaletteOpen(true)}
-          className="w-full max-w-sm flex items-center justify-between px-3 py-2 rounded-[10px] border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] hover:border-[var(--line-strong)] text-xs text-[var(--subtle)] transition-all cursor-pointer"
+          className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] hover:border-[var(--line-strong)] text-xs text-[var(--subtle)] transition-all cursor-pointer shadow-xs"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5" />
-            <span>Search collections, runs, models…</span>
+            <Search className="w-3.5 h-3.5 text-[var(--muted)]" />
+            <span className="text-[var(--muted)]">Quick search…</span>
           </div>
-          <kbd className="px-1.5 py-0.5 rounded-[6px] border border-[var(--line-strong)] bg-[var(--surface)] font-mono-numbers text-[10px] text-[var(--muted)]">
+          <kbd className="px-1.5 py-0.5 rounded border border-[var(--line-strong)] bg-[var(--surface)] font-mono-numbers text-[10px] text-[var(--muted)]">
             ⌘K
           </kbd>
         </button>
@@ -101,7 +101,7 @@ export function Topbar() {
           type="button"
           onClick={toggleTheme}
           title={`Switch to ${theme === "dark" ? "Light" : "Dark"} mode`}
-          className="p-2 rounded-[10px] border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--ink)] transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--ink)] transition-colors cursor-pointer"
         >
           {theme === "dark" ? (
             <Sun className="w-4 h-4 text-[var(--warning)]" />

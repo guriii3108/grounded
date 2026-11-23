@@ -2,72 +2,73 @@
 
 import React from "react";
 import { cn } from "../../lib/utils";
+import { Mascot, MascotName } from "../ui/mascot";
 import { LucideIcon } from "lucide-react";
-import { Mascot } from "../ui/mascot";
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  icon?: LucideIcon;
+  mascot?: MascotName;
   title: string;
   description: string;
-  primaryAction?: {
+  action?: {
     label: string;
     onClick: () => void;
+    icon?: LucideIcon;
   };
   secondaryAction?: {
     label: string;
     onClick: () => void;
   };
-  mascot?: "retriever" | "owl" | "mole";
   className?: string;
 }
 
 export function EmptyState({
   icon: Icon,
+  mascot,
   title,
   description,
-  primaryAction,
+  action,
   secondaryAction,
-  mascot,
   className,
 }: EmptyStateProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center text-center px-8 py-12 rounded-[20px] border border-dashed border-[var(--line-strong)] bg-[var(--surface-2)]/60",
+        "flex flex-col items-center justify-center text-center p-8 sm:p-12 border border-dashed border-[var(--line)] rounded-xl bg-[var(--surface)]/40 max-w-lg mx-auto my-8",
         className
       )}
     >
       {mascot ? (
         <div className="mb-4">
-          <Mascot name={mascot} size={64} />
+          <Mascot name={mascot} pose="idle" size={80} />
         </div>
-      ) : (
-        <div className="w-11 h-11 rounded-[14px] bg-[var(--surface)] border border-[var(--line)] flex items-center justify-center text-[var(--accent)] mb-4 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
-          <Icon className="w-5 h-5" />
+      ) : Icon ? (
+        <div className="w-12 h-12 rounded-lg bg-[var(--surface-2)] border border-[var(--line)] flex items-center justify-center mb-4 text-[var(--muted)]">
+          <Icon className="w-6 h-6" />
         </div>
-      )}
+      ) : null}
 
-      <h3 className="font-display text-2xl text-[var(--ink)] mb-1">{title}</h3>
-      <p className="text-sm text-[var(--muted)] max-w-sm mb-6 leading-relaxed">
-        {description}
-      </p>
+      <h3 className="font-semibold text-lg text-[var(--ink)] mb-1.5 tracking-tight">{title}</h3>
+      <p className="text-xs text-[var(--muted)] leading-relaxed max-w-sm mb-6">{description}</p>
 
-      {(primaryAction || secondaryAction) && (
-        <div className="flex items-center gap-3 flex-wrap justify-center">
-          {primaryAction && (
+      {(action || secondaryAction) && (
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {action && (
             <button
               type="button"
-              onClick={primaryAction.onClick}
-              className="px-5 py-2 rounded-full bg-[var(--ink)] hover:opacity-90 text-[var(--surface)] text-sm font-medium transition-all shadow-sm cursor-pointer"
+              onClick={action.onClick}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--ink)] hover:opacity-90 text-[var(--surface)] text-xs font-medium cursor-pointer transition-all shadow-xs"
             >
-              {primaryAction.label}
+              {action.icon && <action.icon className="w-3.5 h-3.5" />}
+              <span>{action.label}</span>
             </button>
           )}
+
           {secondaryAction && (
             <button
               type="button"
               onClick={secondaryAction.onClick}
-              className="px-5 py-2 rounded-full border border-[var(--line-strong)] bg-[var(--surface)] hover:bg-[var(--surface-2)] text-[var(--ink)] text-sm font-medium transition-all cursor-pointer"
+              className="px-4 py-2 rounded-lg border border-[var(--line)] bg-[var(--surface-2)] hover:bg-[var(--surface)] text-[var(--ink)] text-xs font-medium cursor-pointer transition-colors"
             >
               {secondaryAction.label}
             </button>

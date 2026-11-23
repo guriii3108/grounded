@@ -121,8 +121,8 @@ function CompareContent() {
       <div className="flex flex-col lg:flex-row lg:items-baseline justify-between gap-4 pb-4 border-b border-[var(--line)]">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]">
-              A/B pipeline comparison
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)]">
+              A/B Pipeline Comparison
             </h1>
           </div>
           <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
@@ -434,8 +434,8 @@ function CompareContent() {
           <div className="relative w-full max-w-4xl bg-[var(--surface)] border-l border-[var(--line-strong)] shadow-2xl h-full flex flex-col z-10 text-xs">
             <div className="flex items-center justify-between p-5 border-b border-[var(--line)] shrink-0">
               <div>
-                <span className="font-display text-lg text-[var(--ink)]">
-                  Side-by-side answer & chunk diff
+                <span className="font-bold text-sm text-[var(--ink)]">
+                  Side-by-side Answer & Chunk Diff
                 </span>
                 <p className="text-xs text-[var(--muted)] mt-0.5 line-clamp-1">
                   {selectedPair.resA.question}
