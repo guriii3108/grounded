@@ -1,91 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
 @import "tailwindcss";
 
-/* ─── Modern Dark-First SaaS Token System (Linear / Vercel Aesthetic) ──────── */
+/* ─── Tokens: warm paper (light default) / warm charcoal (dark) ─────────── */
 @layer base {
-  :root,
-  .dark {
-    /* Background layers — Deep Obsidian / Cool Zinc */
-    --bg:          #09090B;   /* base canvas */
-    --surface:     #121215;   /* elevated cards, panels */
-    --surface-2:   #18181C;   /* sidebar, secondary panels, inputs */
-    --bg-subtle:   #18181C;
-    --bg-elevated: #1F1F24;
+  :root {
+    --bg: #f7f4ee;
+    --surface: #ffffff;
+    --surface-2: #efebe2;
+    --bg-subtle: #f1ede4;
+    --bg-elevated: #ffffff;
 
-    /* Borders */
-    --line:          #27272A;  /* hairline boundary */
-    --line-strong:   #3F3F46;  /* emphasized border */
-    --border:        #27272A;
-    --border-strong: #3F3F46;
+    --line: #e4ded1;
+    --line-strong: #d3cbba;
+    --border: #e4ded1;
+    --border-strong: #d3cbba;
 
-    /* Ink / Typography */
-    --ink:        #FAFAFA;    /* primary high-contrast text */
-    --muted:      #A1A1AA;    /* secondary supportive text */
-    --subtle:     #71717A;    /* tertiary / placeholder text */
-    --fg:         #FAFAFA;
-    --fg-muted:   #A1A1AA;
-    --fg-subtle:  #71717A;
+    --ink: #1e2b3a;
+    --muted: #6b665c;
+    --subtle: #8f897e;
+    --fg: #1e2b3a;
+    --fg-muted: #6b665c;
+    --fg-subtle: #8f897e;
 
-    /* Accent — Electric Violet / Indigo */
-    --accent:        #6366F1;
-    --accent-bright: #818CF8;
-    --accent-hover:  #4F46E5;
-    --accent-subtle: rgba(99, 102, 241, 0.14);
-    --accent-fg:     #FFFFFF;
-    --ring:          rgba(99, 102, 241, 0.45);
+    /* accent: deep apricot, AA with white text */
+    --accent: #b85f2b;
+    --accent-bright: #d17a41;
+    --accent-hover: #a3511f;
+    --accent-subtle: rgba(184, 95, 43, 0.1);
+    --accent-fg: #ffffff;
+    --ring: rgba(184, 95, 43, 0.4);
 
-    /* Semantic States */
-    --positive:        #10B981;  /* emerald */
-    --positive-subtle: rgba(16, 185, 129, 0.12);
-    --negative:        #EF4444;  /* rose / red */
-    --negative-subtle: rgba(239, 68, 68, 0.12);
-    --warning:         #F59E0B;  /* amber */
-    --warning-subtle:  rgba(245, 158, 11, 0.12);
+    --positive: #3f7d4e;
+    --positive-subtle: rgba(63, 125, 78, 0.12);
+    --negative: #b8472f;
+    --negative-subtle: rgba(184, 71, 47, 0.12);
+    --warning: #b7791f;
+    --warning-subtle: rgba(183, 121, 31, 0.12);
 
-    /* Shape Radii */
-    --radius-sm:  6px;
-    --radius-md:  8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    /* dark feature panel (self-host) */
+    --panel: #1e2b3a;
+    --panel-fg: #f7f4ee;
+
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
   }
 
-  /* ── Light Theme (when .dark class is removed) ─────────────────────────── */
-  html:not(.dark) {
-    --bg:          #F8FAFC;
-    --surface:     #FFFFFF;
-    --surface-2:   #F1F5F9;
-    --bg-subtle:   #F1F5F9;
-    --bg-elevated: #FFFFFF;
+  :root.dark,
+  html.dark {
+    --bg: #171512;
+    --surface: #1f1c18;
+    --surface-2: #26231e;
+    --bg-subtle: #1c1915;
+    --bg-elevated: #2b2822;
 
-    --line:          #E2E8F0;
-    --line-strong:   #CBD5E1;
-    --border:        #E2E8F0;
-    --border-strong: #CBD5E1;
+    --line: #302c25;
+    --line-strong: #433e35;
+    --border: #302c25;
+    --border-strong: #433e35;
 
-    --ink:        #0F172A;
-    --muted:      #64748B;
-    --subtle:     #94A3B8;
-    --fg:         #0F172A;
-    --fg-muted:   #64748B;
-    --fg-subtle:  #94A3B8;
+    --ink: #f3eee4;
+    --muted: #a59f92;
+    --subtle: #7c766a;
+    --fg: #f3eee4;
+    --fg-muted: #a59f92;
+    --fg-subtle: #7c766a;
 
-    --accent:        #4F46E5;
-    --accent-bright: #6366F1;
-    --accent-hover:  #4338CA;
-    --accent-subtle: rgba(79, 70, 229, 0.08);
-    --accent-fg:     #FFFFFF;
-    --ring:          rgba(79, 70, 229, 0.35);
+    --accent: #e9a66b;
+    --accent-bright: #f1bc8c;
+    --accent-hover: #de9455;
+    --accent-subtle: rgba(233, 166, 107, 0.14);
+    --accent-fg: #1b1712;
+    --ring: rgba(233, 166, 107, 0.45);
 
-    --positive:        #059669;
-    --positive-subtle: rgba(5, 150, 105, 0.1);
-    --negative:        #DC2626;
-    --negative-subtle: rgba(220, 38, 38, 0.1);
-    --warning:         #D97706;
-    --warning-subtle:  rgba(217, 119, 6, 0.1);
+    --positive: #7dbe8a;
+    --positive-subtle: rgba(125, 190, 138, 0.14);
+    --negative: #e07b63;
+    --negative-subtle: rgba(224, 123, 99, 0.14);
+    --warning: #e3b04b;
+    --warning-subtle: rgba(227, 176, 75, 0.14);
+
+    --panel: #26231e;
+    --panel-fg: #f3eee4;
   }
 
-  /* ── Global Base Resets ────────────────────────────────────────────────── */
   * {
     border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
@@ -98,15 +103,14 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ── Focus and Dialog ─────────────────────────────────────────────────── */
   dialog:modal {
     overscroll-behavior: contain;
   }
   dialog::backdrop {
     overflow: hidden;
     overscroll-behavior: contain;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
+    background: rgba(23, 21, 18, 0.55);
+    backdrop-filter: blur(6px);
   }
 
   :focus-visible {
@@ -116,16 +120,36 @@
   }
 }
 
-/* ─── Scrollbars ─────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
-  border-radius: 9999px;
+/* ─── Tailwind v4 theme bridge: bg-paper, text-ink, border-hair, … ─────── */
+@theme inline {
+  --color-paper: var(--bg);
+  --color-card: var(--surface);
+  --color-sunk: var(--surface-2);
+  --color-hair: var(--line);
+  --color-hair-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-mute: var(--muted);
+  --color-faint: var(--subtle);
+  --color-brand: var(--accent);
+  --color-brand-fg: var(--accent-fg);
+  --color-pos: var(--positive);
+  --color-neg: var(--negative);
+  --color-panel: var(--panel);
+  --color-panel-fg: var(--panel-fg);
+
+  --font-serif-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+
+  --shadow-soft: 0 1px 2px rgba(30, 43, 58, 0.04), 0 8px 24px -12px rgba(30, 43, 58, 0.12);
+  --shadow-lift: 0 2px 4px rgba(30, 43, 58, 0.04), 0 24px 60px -24px rgba(30, 43, 58, 0.22);
 }
+
+/* ─── Scrollbars ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-/* ─── Typography & Helpers ───────────────────────────────────────────────── */
+/* ─── Typography helpers (used across the app) ──────────────────────────── */
 .font-display {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 600;
@@ -137,26 +161,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
+.tabular-nums { font-variant-numeric: tabular-nums; }
 
-/* ─── Modern Animations ──────────────────────────────────────────────────── */
+/* ─── App animations (kept for existing components) ─────────────────────── */
 @keyframes page-enter {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.page-enter { animation: page-enter 0.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-.page-enter {
-  animation: page-enter 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-.animate-in { animation: fade-in 0.15s ease-out both; }
-.fade-in    { animation-name: fade-in; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-in { animation: fade-in 0.2s ease-out both; }
+.fade-in { animation-name: fade-in; }
 
 @keyframes count-rise {
   from { opacity: 0; transform: translateY(3px); }
@@ -164,48 +180,65 @@
 }
 .count-rise { animation: count-rise 0.2s ease-out both; }
 
-/* ─── Visual Glow & Cards ────────────────────────────────────────────────── */
-.glow-accent {
-  box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.25);
+.glow-accent { box-shadow: 0 0 28px -8px color-mix(in srgb, var(--accent) 45%, transparent); }
+
+.card-hover { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.card-hover:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+
+/* ─── Landing ───────────────────────────────────────────────────────────── */
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
 }
 
-.card-hover {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.card-hover:hover {
-  border-color: var(--line-strong);
-  transform: translateY(-1px);
-}
-
-/* ─── Marketing Landing ─────────────────────────────────────────────────── */
-.hero-gradient-text {
-  background: linear-gradient(100deg, #f5f3ff 8%, #b9b4ff 42%, #7dd3fc 92%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.landing-grid {
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: linear-gradient(to top, black, transparent 95%);
-}
-
-.glass-panel {
+/* warm radial glow behind the hero, the only gradient on the page */
+.hero-glow {
   background:
-    radial-gradient(circle at 82% 20%, rgba(99, 102, 241, 0.16), transparent 32rem),
-    color-mix(in srgb, var(--surface) 78%, transparent);
-  box-shadow: 0 30px 80px -48px rgba(0, 0, 0, 0.85);
+    radial-gradient(60% 50% at 50% 62%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(40% 30% at 18% 20%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%);
 }
 
-html:not(.dark) .hero-gradient-text {
-  background-image: linear-gradient(100deg, #111827 8%, #4f46e5 48%, #0e7490 92%);
+/* oversized background word */
+.ghost-word {
+  font-size: clamp(5.5rem, 21vw, 19rem);
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  opacity: 0.05;
 }
 
-html:not(.dark) .glass-panel {
-  background:
-    radial-gradient(circle at 82% 20%, rgba(129, 140, 248, 0.18), transparent 32rem),
-    rgba(255, 255, 255, 0.75);
+/* mascot idle float */
+@keyframes mascot-float {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50%      { transform: translateY(-6px) rotate(0.6deg); }
+}
+.mascot-float { animation: mascot-float 7s ease-in-out infinite; will-change: transform; }
+
+/* the crew image has a white matte on light mode: multiply it away.
+   Remove this rule if your crew-hero file already has real alpha. */
+html:not(.dark) .crew-blend { mix-blend-mode: multiply; }
+
+/* faint paper grain */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+html.dark .grain::before { opacity: 0.07; }
+
+/* ─── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .mascot-float, .page-enter, .animate-in, .count-rise { animation: none; }
 }
