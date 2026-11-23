@@ -7,7 +7,6 @@ import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Check, Copy, Moon, Sun } from "lucide-react";
 import { useApp } from "../../lib/store/app-context";
 
-// TODO: set your real repo URL
 const GITHUB_URL = "https://github.com/guriii3108/grounded";
 
 /* ───────────────────────── primitives ───────────────────────── */
@@ -214,7 +213,7 @@ function IngestVisual() {
             )}
           </div>
           <span className="hidden shrink-0 text-xs text-mute font-mono-numbers sm:block">{f.meta}</span>
-          <span className={`shrink-0 text-xs ${f.done ? "text-pos" : "text-brand"}`}>{f.done ? "Ready" : `${f.pct}%`}</span>
+          <span className={`shrink-0 text-xs ${f.done ? "text-pos" : "text-ink"}`}>{f.done ? "Ready" : `${f.pct}%`}</span>
         </li>
       ))}
     </ul>
@@ -340,7 +339,7 @@ export default function MarketingLandingPage() {
   );
 
   return (
-    <div className="grain min-h-screen overflow-x-hidden bg-paper text-ink selection:bg-brand/25">
+    <div className="grain min-h-screen overflow-x-hidden bg-paper text-ink selection:bg-hl">
       {/* ── nav ── */}
       <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between rounded-full border border-hair bg-paper/80 pl-5 pr-2 shadow-soft backdrop-blur-xl">
@@ -381,13 +380,13 @@ export default function MarketingLandingPage() {
           <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
             <Reveal>
               <p className="flex items-center gap-2 text-sm text-mute">
-                <span className="size-1.5 rounded-full bg-brand" />
+                <span className="size-1.5 rounded-full bg-ink" />
                 Open-source RAG with built-in evaluation
               </p>
             </Reveal>
             <Reveal delay={80}>
               <h1 className="mt-7 font-serif-display text-[clamp(3.2rem,8.4vw,7.6rem)] font-normal leading-[0.94] tracking-[-0.03em] text-balance">
-                Every answer grounded, every claim <em className="italic text-brand">measured.</em>
+                Every answer grounded, every claim <em className="italic">measured.</em>
               </h1>
             </Reveal>
             <Reveal delay={160}>
@@ -415,12 +414,6 @@ export default function MarketingLandingPage() {
 
           {/* crew, cropped by the section's bottom edge */}
           <div className="relative mx-auto mt-12 h-[250px] max-w-5xl overflow-hidden sm:h-[400px] lg:h-[470px]">
-            {/* <span
-              aria-hidden="true"
-              className="ghost-word pointer-events-none absolute inset-x-0 bottom-[-0.14em] select-none text-center font-serif-display leading-none"
-            >
-              GROUNDED
-            </span> */}
             <Image
               src="/mascot/crew-hero-v2.webp"
               alt="Mochi, Wisp and Nova, the Grounded crew"
@@ -487,7 +480,7 @@ export default function MarketingLandingPage() {
                       <p className="text-xs text-mute">Retrieved passage</p>
                       <p key={current.id} className="mt-3 animate-in text-[15px] leading-7 text-mute">
                         {current.before}
-                        <mark className="rounded bg-brand/20 px-0.5 text-ink">{current.hit}</mark>
+                        <mark className="rounded bg-hl px-0.5 text-ink">{current.hit}</mark>
                         {current.after}
                       </p>
                     </div>
@@ -566,7 +559,7 @@ export default function MarketingLandingPage() {
                   <li className="group grid grid-cols-[2.5rem_1fr] gap-x-4 border-b border-hair py-8 transition-colors">
                     <span className="pt-1.5 text-xs text-faint font-mono-numbers">{String(i + 1).padStart(2, "0")}</span>
                     <div>
-                      <h3 className="font-serif-display text-3xl font-normal tracking-[-0.015em] transition-colors group-hover:text-brand">{title}</h3>
+                      <h3 className="font-serif-display text-3xl font-normal tracking-[-0.015em] transition-transform group-hover:translate-x-1">{title}</h3>
                       <p className="mt-3 max-w-lg text-base leading-7 text-mute">{text}</p>
                     </div>
                   </li>
@@ -651,7 +644,7 @@ export default function MarketingLandingPage() {
       </main>
 
       {/* ── footer ── */}
-      <footer className="relative overflow-hidden border-t border-hair px-5 pt-14 sm:px-8">
+      <footer className="relative overflow-hidden border-t border-hair px-5 py-14 sm:px-8">
         <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
           <Logo />
           <nav className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-mute">
@@ -661,9 +654,6 @@ export default function MarketingLandingPage() {
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-ink">GitHub</a>
           </nav>
         </div>
-        {/* <p aria-hidden="true" className="ghost-word mt-10 select-none text-center font-serif-display leading-[0.8]">
-          Grounded
-        </p> */}
       </footer>
     </div>
   );

@@ -1,45 +1,49 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
 @import "tailwindcss";
 
-/* ─── Tokens: warm paper (light default) / warm charcoal (dark) ─────────── */
+/* ─── Tokens: neutral black & white. Colour lives in the mascots only. ─── */
 @layer base {
   :root {
-    --bg: #f7f4ee;
+    --bg: #fafafa;
     --surface: #ffffff;
-    --surface-2: #efebe2;
-    --bg-subtle: #f1ede4;
+    --surface-2: #f4f4f5;
+    --bg-subtle: #f4f4f5;
     --bg-elevated: #ffffff;
 
-    --line: #e4ded1;
-    --line-strong: #d3cbba;
-    --border: #e4ded1;
-    --border-strong: #d3cbba;
+    --line: #e7e7e9;
+    --line-strong: #d4d4d8;
+    --border: #e7e7e9;
+    --border-strong: #d4d4d8;
 
-    --ink: #1e2b3a;
-    --muted: #6b665c;
-    --subtle: #8f897e;
-    --fg: #1e2b3a;
-    --fg-muted: #6b665c;
-    --fg-subtle: #8f897e;
+    --ink: #0a0a0a;
+    --muted: #6b6b72;
+    --subtle: #9a9aa2;
+    --fg: #0a0a0a;
+    --fg-muted: #6b6b72;
+    --fg-subtle: #9a9aa2;
 
-    /* accent: deep apricot, AA with white text */
-    --accent: #b85f2b;
-    --accent-bright: #d17a41;
-    --accent-hover: #a3511f;
-    --accent-subtle: rgba(184, 95, 43, 0.1);
-    --accent-fg: #ffffff;
-    --ring: rgba(184, 95, 43, 0.4);
+    /* accent is ink: buttons, chips and progress are black */
+    --accent: #0a0a0a;
+    --accent-bright: #27272a;
+    --accent-hover: #27272a;
+    --accent-subtle: rgba(10, 10, 10, 0.06);
+    --accent-fg: #fafafa;
+    --ring: rgba(10, 10, 10, 0.35);
 
-    --positive: #3f7d4e;
-    --positive-subtle: rgba(63, 125, 78, 0.12);
-    --negative: #b8472f;
-    --negative-subtle: rgba(184, 71, 47, 0.12);
-    --warning: #b7791f;
-    --warning-subtle: rgba(183, 121, 31, 0.12);
+    /* colour is reserved for meaning */
+    --positive: #2f7a4b;
+    --positive-subtle: rgba(47, 122, 75, 0.12);
+    --negative: #b93a32;
+    --negative-subtle: rgba(185, 58, 50, 0.12);
+    --warning: #a8700f;
+    --warning-subtle: rgba(168, 112, 15, 0.12);
+
+    /* highlighter: Mochi's yellow, the only colour in the UI */
+    --hl: #fde68a;
 
     /* dark feature panel (self-host) */
-    --panel: #1e2b3a;
-    --panel-fg: #f7f4ee;
+    --panel: #0a0a0a;
+    --panel-fg: #fafafa;
 
     --radius-sm: 8px;
     --radius-md: 10px;
@@ -49,40 +53,42 @@
 
   :root.dark,
   html.dark {
-    --bg: #171512;
-    --surface: #1f1c18;
-    --surface-2: #26231e;
-    --bg-subtle: #1c1915;
-    --bg-elevated: #2b2822;
+    --bg: #0a0a0a;
+    --surface: #111113;
+    --surface-2: #18181b;
+    --bg-subtle: #0f0f11;
+    --bg-elevated: #1c1c1f;
 
-    --line: #302c25;
-    --line-strong: #433e35;
-    --border: #302c25;
-    --border-strong: #433e35;
+    --line: #232326;
+    --line-strong: #34343a;
+    --border: #232326;
+    --border-strong: #34343a;
 
-    --ink: #f3eee4;
-    --muted: #a59f92;
-    --subtle: #7c766a;
-    --fg: #f3eee4;
-    --fg-muted: #a59f92;
-    --fg-subtle: #7c766a;
+    --ink: #fafafa;
+    --muted: #a1a1aa;
+    --subtle: #71717a;
+    --fg: #fafafa;
+    --fg-muted: #a1a1aa;
+    --fg-subtle: #71717a;
 
-    --accent: #e9a66b;
-    --accent-bright: #f1bc8c;
-    --accent-hover: #de9455;
-    --accent-subtle: rgba(233, 166, 107, 0.14);
-    --accent-fg: #1b1712;
-    --ring: rgba(233, 166, 107, 0.45);
+    --accent: #fafafa;
+    --accent-bright: #e4e4e7;
+    --accent-hover: #e4e4e7;
+    --accent-subtle: rgba(250, 250, 250, 0.08);
+    --accent-fg: #0a0a0a;
+    --ring: rgba(250, 250, 250, 0.4);
 
-    --positive: #7dbe8a;
-    --positive-subtle: rgba(125, 190, 138, 0.14);
-    --negative: #e07b63;
-    --negative-subtle: rgba(224, 123, 99, 0.14);
-    --warning: #e3b04b;
-    --warning-subtle: rgba(227, 176, 75, 0.14);
+    --positive: #6fcf97;
+    --positive-subtle: rgba(111, 207, 151, 0.14);
+    --negative: #f28b82;
+    --negative-subtle: rgba(242, 139, 130, 0.14);
+    --warning: #e9b949;
+    --warning-subtle: rgba(233, 185, 73, 0.14);
 
-    --panel: #26231e;
-    --panel-fg: #f3eee4;
+    --hl: rgba(253, 224, 71, 0.28);
+
+    --panel: #18181b;
+    --panel-fg: #fafafa;
   }
 
   * {
@@ -109,7 +115,7 @@
   dialog::backdrop {
     overflow: hidden;
     overscroll-behavior: contain;
-    background: rgba(23, 21, 18, 0.55);
+    background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(6px);
   }
 
@@ -134,13 +140,14 @@
   --color-brand-fg: var(--accent-fg);
   --color-pos: var(--positive);
   --color-neg: var(--negative);
+  --color-hl: var(--hl);
   --color-panel: var(--panel);
   --color-panel-fg: var(--panel-fg);
 
   --font-serif-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
 
-  --shadow-soft: 0 1px 2px rgba(30, 43, 58, 0.04), 0 8px 24px -12px rgba(30, 43, 58, 0.12);
-  --shadow-lift: 0 2px 4px rgba(30, 43, 58, 0.04), 0 24px 60px -24px rgba(30, 43, 58, 0.22);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.12);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.04), 0 24px 60px -24px rgba(0, 0, 0, 0.2);
 }
 
 /* ─── Scrollbars ────────────────────────────────────────────────────────── */
@@ -180,7 +187,7 @@
 }
 .count-rise { animation: count-rise 0.2s ease-out both; }
 
-.glow-accent { box-shadow: 0 0 28px -8px color-mix(in srgb, var(--accent) 45%, transparent); }
+.glow-accent { box-shadow: 0 0 28px -8px color-mix(in srgb, var(--ink) 30%, transparent); }
 
 .card-hover { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
 .card-hover:hover { border-color: var(--line-strong); transform: translateY(-1px); }
@@ -198,14 +205,12 @@
   transform: none;
 }
 
-/* warm radial glow behind the hero, the only gradient on the page */
+/* faint neutral halo behind the crew, no tint */
 .hero-glow {
-  background:
-    radial-gradient(60% 50% at 50% 62%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
-    radial-gradient(40% 30% at 18% 20%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%);
+  background: radial-gradient(50% 40% at 50% 72%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 70%);
 }
 
-/* oversized background word */
+/* oversized background word (unused while the hero ghost word is off) */
 .ghost-word {
   font-size: clamp(5.5rem, 21vw, 19rem);
   letter-spacing: -0.04em;
@@ -221,7 +226,7 @@
 .mascot-float { animation: mascot-float 7s ease-in-out infinite; will-change: transform; }
 
 /* the crew image has a white matte on light mode: multiply it away.
-   Remove this rule if your crew-hero file already has real alpha. */
+   Remove this rule once crew-hero-v2.webp has real alpha. */
 html:not(.dark) .crew-blend { mix-blend-mode: multiply; }
 
 /* faint paper grain */
@@ -231,10 +236,10 @@ html:not(.dark) .crew-blend { mix-blend-mode: multiply; }
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
-html.dark .grain::before { opacity: 0.07; }
+html.dark .grain::before { opacity: 0.05; }
 
 /* ─── Reduced motion ────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
