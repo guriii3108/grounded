@@ -98,12 +98,28 @@ function Label({ children }: { children: ReactNode }) {
 }
 
 /** Single-surface frame. Rows inside are separated by hairlines, never nested cards. */
-function Frame({ title, children, mascot }: { title: string; children: ReactNode; mascot?: ReactNode }) {
+function Frame({
+  title,
+  children,
+  mascot,
+  mascotPos = "right",
+}: {
+  title: string;
+  children: ReactNode;
+  mascot?: ReactNode;
+  mascotPos?: "left" | "right";
+}) {
   return (
     <div className="relative">
       {mascot}
       <div className="overflow-hidden rounded-[22px] border border-hair bg-card shadow-soft">
-        <div className="border-b border-hair px-5 py-3 text-xs text-mute font-mono-numbers">{title}</div>
+        <div
+          className={`border-b border-hair py-3 text-xs text-mute font-mono-numbers transition-all ${
+            mascotPos === "left" ? "px-5 sm:pl-36 sm:pr-5" : "px-5"
+          }`}
+        >
+          {title}
+        </div>
         {children}
       </div>
     </div>
@@ -430,7 +446,7 @@ export default function MarketingLandingPage() {
 
             <Reveal delay={100} className="mt-12">
               <div className="relative">
-                <Mascot name="nova" pose="idle" width={120} className="absolute -top-[86px] right-6 z-10 hidden sm:block" />
+                <Mascot name="nova" pose="idle" width={104} className="absolute -top-[90px] right-6 z-10 hidden sm:block" />
                 <div className="grid overflow-hidden rounded-[26px] border border-hair bg-card shadow-lift lg:grid-cols-[1.25fr_1fr]">
                   {/* answer pane */}
                   <div className="p-6 sm:p-9">
@@ -446,6 +462,9 @@ export default function MarketingLandingPage() {
 
                   {/* source pane */}
                   <div className="border-t border-hair bg-sunk/70 lg:border-l lg:border-t-0">
+                    <div className="flex h-11 items-center justify-between border-b border-hair px-6 text-xs text-mute font-mono-numbers">
+                      <span>sources / 3 retrieved</span>
+                    </div>
                     <ul className="divide-y divide-hair border-b border-hair">
                       {sources.map((s) => (
                         <li key={s.id}>
@@ -509,13 +528,14 @@ export default function MarketingLandingPage() {
                     <Reveal delay={120} className={`lg:col-span-7 ${flip ? "lg:order-1" : ""}`}>
                       <Frame
                         title={["collection / sec-10k", "retrieval trace", "run / gpt4o-hybrid-k5", "compare / run A vs run B"][i]}
+                        mascotPos={flip ? "left" : "right"}
                         mascot={
                           <Mascot
                             name={mascots[i].name}
                             pose={mascots[i].pose}
-                            width={112}
+                            width={104}
                             delay={i * 0.7}
-                            className={`absolute -top-[78px] z-10 hidden sm:block ${flip ? "left-6" : "right-6"}`}
+                            className={`absolute -top-[80px] z-10 hidden sm:block ${flip ? "left-6" : "right-6"}`}
                           />
                         }
                       >
