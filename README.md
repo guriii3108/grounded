@@ -31,18 +31,37 @@ Teams ship RAG, it gives a wrong answer, and nobody knows whether the cause is c
 Grounded closes that loop. Ingestion, retrieval config, answering, and evaluation live in **one self-hostable tool**, so you can change one variable and see exactly what moved in quality, latency, and cost.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "ui-sans-serif, system-ui, sans-serif", "fontSize": "16px", "lineColor": "#94A3B8"}}}%%
+%%{init: {"theme": "base", "themeVariables": {
+  "fontFamily": "ui-sans-serif, system-ui, sans-serif",
+  "fontSize": "14px",
+  "primaryColor": "#18181B",
+  "primaryTextColor": "#FAFAFA",
+  "primaryBorderColor": "#3F3F46",
+  "lineColor": "#71717A",
+  "background": "#09090B",
+  "nodeBorder": "#3F3F46",
+  "clusterBkg": "#18181B",
+  "titleColor": "#FAFAFA",
+  "edgeLabelBackground": "#18181B"
+}}}%%
 flowchart LR
-    A["Ingest"] --> B["Ask"] --> C["Evaluate"] --> D["Change one thing"] --> E["Compare"]
-    E -.-> A
+    A([" 📄  Ingest "]):::step1
+    B([" 💬  Ask "]):::step2
+    C([" 📊  Evaluate "]):::step3
+    D([" 🔧  Tune "]):::step4
+    E([" ⚖️  Compare "]):::step5
 
-    classDef mochi fill:#B45309,stroke:#78350F,stroke-width:2px,color:#FFFFFF
-    classDef wisp fill:#7C3AED,stroke:#4C1D95,stroke-width:2px,color:#FFFFFF
-    classDef nova fill:#EA580C,stroke:#9A3412,stroke-width:2px,color:#FFFFFF
+    A --> B --> C --> D --> E
+    E -. "iterate" .-> A
 
-    class A mochi
-    class B wisp
-    class C,D,E nova
+    classDef step1 fill:#1C1917,stroke:#D97706,stroke-width:2px,color:#FCD34D,rx:8
+    classDef step2 fill:#1E1B4B,stroke:#6D28D9,stroke-width:2px,color:#C4B5FD,rx:8
+    classDef step3 fill:#0C1A2E,stroke:#2563EB,stroke-width:2px,color:#93C5FD,rx:8
+    classDef step4 fill:#1A1A1A,stroke:#52525B,stroke-width:2px,color:#A1A1AA,rx:8
+    classDef step5 fill:#1A0F0A,stroke:#EA580C,stroke-width:2px,color:#FB923C,rx:8
+
+    linkStyle default stroke:#3F3F46,stroke-width:2px
+    linkStyle 4 stroke:#52525B,stroke-width:1.5px,stroke-dasharray:5
 ```
 
 > [!NOTE]
@@ -117,35 +136,56 @@ flowchart LR
 ## How it works
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "ui-sans-serif, system-ui, sans-serif", "fontSize": "16px", "lineColor": "#94A3B8"}}}%%
+%%{init: {"theme": "base", "themeVariables": {
+  "fontFamily": "ui-sans-serif, system-ui, sans-serif",
+  "fontSize": "13px",
+  "primaryColor": "#18181B",
+  "primaryTextColor": "#FAFAFA",
+  "primaryBorderColor": "#3F3F46",
+  "lineColor": "#52525B",
+  "background": "#09090B",
+  "edgeLabelBackground": "#18181B"
+}}}%%
 flowchart LR
-    UI["CLIENT<br/>Next.js UI<br/>React · Tailwind"]
-    API["SERVER<br/>FastAPI<br/>REST + SSE"]
-    Q[("SERVER<br/>Redis<br/>job queue")]
-    W["SERVER<br/>Worker<br/>ingestion · eval runs"]
-    PG[("DATA<br/>PostgreSQL<br/>pgvector + full-text")]
-    OAI["MODELS<br/>OpenAI-compatible<br/>OpenAI · Ollama · vLLM · Groq"]
-    ANT["MODELS<br/>Anthropic"]
+    subgraph CLIENT["  🖥️  Client  "]
+        UI["Next.js UI\nReact · Tailwind"]:::client
+    end
+
+    subgraph SERVER["  ⚙️  Server  "]
+        direction TB
+        API["FastAPI\nREST + SSE"]:::server
+        Q[("Redis\njob queue")]:::server
+        W["Worker\ningest · evals"]:::server
+        API --> Q --> W
+    end
+
+    subgraph DATA["  🗄️  Data  "]
+        PG[("PostgreSQL\npgvector · FTS")]:::data
+    end
+
+    subgraph MODELS["  🤖  Models  "]
+        direction TB
+        OAI["OpenAI-compatible\nOpenAI · Ollama · vLLM · Groq"]:::model
+        ANT["Anthropic"]:::model
+    end
 
     UI <--> API
     API --> PG
-    API --> Q
-    Q --> W
     W --> PG
-    API --> OAI
-    API --> ANT
-    W --> OAI
-    W --> ANT
+    API --> OAI & ANT
+    W --> OAI & ANT
 
-    classDef client fill:#7C3AED,stroke:#4C1D95,stroke-width:2px,color:#FFFFFF
-    classDef server fill:#EA580C,stroke:#9A3412,stroke-width:2px,color:#FFFFFF
-    classDef data fill:#B45309,stroke:#78350F,stroke-width:2px,color:#FFFFFF
-    classDef model fill:#15803D,stroke:#14532D,stroke-width:2px,color:#FFFFFF
+    classDef client fill:#1E1B4B,stroke:#6D28D9,stroke-width:2px,color:#C4B5FD
+    classDef server fill:#1C1917,stroke:#D97706,stroke-width:2px,color:#FCD34D
+    classDef data fill:#0C1A2E,stroke:#2563EB,stroke-width:2px,color:#93C5FD
+    classDef model fill:#14532D,stroke:#15803D,stroke-width:2px,color:#86EFAC
 
-    class UI client
-    class API,Q,W server
-    class PG data
-    class OAI,ANT model
+    style CLIENT fill:#0F0F14,stroke:#3F3F46,stroke-width:1px,color:#A1A1AA
+    style SERVER fill:#0F0F14,stroke:#3F3F46,stroke-width:1px,color:#A1A1AA
+    style DATA fill:#0F0F14,stroke:#3F3F46,stroke-width:1px,color:#A1A1AA
+    style MODELS fill:#0F0F14,stroke:#3F3F46,stroke-width:1px,color:#A1A1AA
+
+    linkStyle default stroke:#3F3F46,stroke-width:1.5px
 ```
 
 | Step               | What happens                                                                                                                        |
